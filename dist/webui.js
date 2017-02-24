@@ -9,8 +9,8 @@ $(document).ready( function() {
     $.get("inquiry", function(data, status) {
       console.log( data );
 
-      $("#gCodeLog").append( '<p class="text-muted">' + data + '</p>'  );
-      scrollConsole();
+      //$("#gCodeLog").append( '<p class="text-muted">' + data + '</p>'  );
+      //scrollConsole();
 
       $("#rde").text( data.match( /\d+/g )[0] );
       $("#rdp").text( data.match( /\d+/g )[2] );
@@ -74,6 +74,27 @@ function feedback( output ) {
   $("#gCodeLog").append( '<p class="text-warning">' + output + '</p>'  );
   scrollConsole();
 }
+
+String.prototype.contains = function( it ) {
+  return this.indexOf( it ) != -1;
+};
+
+Dropzone.options.mydz = { dictDefaultMessage: "Upload GCode here",accept: function( file, done ) {
+  if ( file.name.contains( '.g' ) ) done();
+  else done( 'Not a valid GCode file.' );
+  }, init: function() {
+    this.on( 'error', function( file, response ) {
+      var errorMessage = response.errorMessage;
+      $( file.previewElement ).find( '.dz-error-message' ).text( errorMessage );
+    } );
+
+    this.on( 'addedfile', function() {
+      if ( this.files[1] != null ) {
+        this.removeFile( this.files[0] );
+      }
+    } );
+  }
+};
 
 function start_p() {
   $("#stat").text( 'Printing' );
@@ -146,28 +167,6 @@ cache: false
 
 });
 });
-String.prototype.contains = function(it) {
-return this.indexOf(it) != -1;
-};
-
-Dropzone.options.mydz = {
-dictDefaultMessage: "Upload GCode here",
-accept: function(file, done) {
-if (file.name.contains(".g")) done();
-else done("Not a valid GCode file.");
-},
-init: function() {
-this.on('error', function(file, response) {
-var errorMessage = response.errorMessage;
-$(file.previewElement).find('.dz-error-message').text(errorMessage);
-});
-this.on("addedfile", function() {
-if (this.files[1] != null) {
-this.removeFile(this.files[0]);
-}
-});
-}
-};
 
 
 $('#sendRAWgCode').click(function() {
