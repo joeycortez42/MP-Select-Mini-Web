@@ -53,4 +53,3 @@ Joey Cortez
 * Print file from SD card
 * Rename file from SD card
 * Refresh SD card
-* Layers # of ##

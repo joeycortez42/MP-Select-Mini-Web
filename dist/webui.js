@@ -13,8 +13,8 @@ $(document).ready( function() {
     $.get("inquiry", function(data, status) {
       console.log( data );
 
-      //$("#gCodeLog").append( '<p class="text-muted">' + data + '</p>'  );
-      //scrollConsole();
+      $("#gCodeLog").append( '<p class="text-muted">' + data + '</p>'  );
+      scrollConsole();
 
       $("#rde").text( data.match( /\d+/g )[0] );
       $("#rdp").text( data.match( /\d+/g )[2] );
@@ -24,10 +24,12 @@ $(document).ready( function() {
       if (c == 'I') {
         $("#stat").text( 'Idle' );
         $("#pgs").css( 'width', '0%' );
+        $("#gCodeSend").removeClass( 'btn-disable' );
       } else if (c == 'P') {
         $("#stat").text( 'Printing' );
         $("#pgs").css( 'width', data.match( /\d+/g )[4] + '%' );
         $("#pgs").html( data.match( /\d+/g )[4] + '% Complete' );
+        $("#gCodeSend").addClass( 'btn-disable' );
       } else $("#stat").text( 'N/A' );
     } );
   }, 4000);
@@ -65,6 +67,12 @@ $(document).ready( function() {
     sendCmd( 'P000' );
     $.ajax({ url: 'set?cmd={C:P000}', cache: false }).done( function(data) { feedback( data ); } );
   } );
+
+  $('#gCodeSend').click(function() {
+    gCode2Send = $('#gcode').val();
+    if (gCode2Send == '') return;
+    $.ajax({ url: "set?code=" + gCode2Send, cache: false }).done( function(data) { feedback( data ); } );
+  });
 
   $("form").submit( function() {
     return false;
@@ -124,7 +132,6 @@ function cancel_p() {
   $.ajax({ url: 'set?cmd={P:X}', cache: false }).done( function(data) { feedback( data ); } );
 }
 
-
 /*$tooQuick = false;
 $extruderTemp = '0';
 $bedTemp = '0';*/
@@ -165,40 +172,6 @@ $("#rawgCode").removeClass('disabledbutton');
 });
 }, 5000);
 
-$("#sete").click(function() {
-var value = pad($("#wre").val(), 3);
-$.ajax({
-url: 'set?cmd={C:T0' + value + '}',
-cache: false
-}).done(function(html) {});
-});
-
-$("#setp").click(function() {
-var value = pad($("#wrp").val(), 3);
-$.ajax({
-url: 'set?cmd={C:P' + value + '}',
-cache: false
-}).done(function(html) {});
-});
-
-});
-});
-
-
-$('#sendRAWgCode').click(function() {
-var gCode2Send = $('#gcode').val();
-if (gCode2Send == '') {
-alert("You didn't enter anything!");
-return;
-}
-$.ajax({
-url: "set?code=" + gCode2Send,
-cache: false
-}).done(function(html) {
-$('#gcode').val('');
-$('#gCodeLog').append("<br>"+gCode2Send);
-gCodeLog.scrollTop = gCodeLog.scrollHeight;
-//            alert('sent!');
 });
 });
 
