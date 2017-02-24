@@ -47,7 +47,6 @@ Joey Cortez
 * Change multiplier
 * Rename cache.gc file with M566 after upload
 * Print done / presentation button. (Gantry away put all the way forward.)
-* Preheat off button
 * Disengage motors
 * Query SD card for list of files
 * Delete file from SD card
