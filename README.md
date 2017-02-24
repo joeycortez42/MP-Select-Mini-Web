@@ -33,5 +33,7 @@ Did something break? Here's how you can undo the Web UI upgrade.
 ## Credits
 
 Jason Jones (Original Code)
+
 Matthew Upp (Middle Man / Beta Tester)
+
 Mario Anthony Galliano (Facebook posting with upgrade/downgrade instructions.)
