@@ -4,7 +4,14 @@ URL: https://github.com/nokemono42/MP-Select-Mini-Web
 Version: 1.1;
 */
 
-h3 { margin-bottom: 20px; }
+html {
+    font-size: 16px;
+}
+
+h3 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
 
 h4{ margin-top: 0; }
 

@@ -9,7 +9,7 @@ $(document).ready( function() {
     $.get("inquiry", function(data, status) {
       console.log( data );
 
-      $("#gCodeLog").html( data );
+      $("#gCodeLog").append( data + '<br />' );
 
       $("#rde").text( data.match(/\d+/g)[0] );
       $("#rdp").text( data.match(/\d+/g)[2] );
