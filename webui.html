@@ -12,8 +12,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" />-->
         <!-- -->
         <link rel="stylesheet" href="https://rawgit.com/nokemono42/MP-Select-Mini-Web/web-ui-update/dist/webui.css"/>
-        <!-- -->
-        <!-- -- 
+        <!-- --
         <link rel="stylesheet" href="dist/webui.css"/>
         !-- -->
     </head>
@@ -54,25 +53,35 @@
         <div class="col-xs-12 col-md-4">
         </div>
         <div class="col-xs-12 col-md-4">
-            <div id="gCodeLog" class="well"></div>
+            <div class="well" id="console">
+                <div id="gCodeLog"></div>
+            </div>
             <div id="rawgCode" class="input-group">
-                <input type="text" class="form-control" name="gcode" id="gcode" placeholder="Send gCode to printer...">
+                <input type="text" class="form-control" name="gcode" id="gcode" placeholder="Send gCode to printer..." />
                 <span class="input-group-btn">
                     <button class="btn btn-warning" id="sendRAWgCode">Send</button>
                 </span>
             </div>
         </div>
-        <div class="col-xs-12 col-md-4">
+        <div class="col-xs-12 col-md-4 temperature">
             <h4 class="text-center">Temperature</h4>
             <div class="row">
                 <div class="col-xs-6 text-center">
                     <h5>Extruder</h5>
                     <h3 id="rde">N/A</h3>
+                    <div class="input-group target">
+                      <input type="text" class="form-control" id="wre" />
+                      <span class="input-group-addon">°C</span>
+                    </div>
                     <button type="button" class="btn btn-default btn-sm" id="clre">OFF</button>
                 </div>
                 <div class="col-xs-6 text-center">
                     <h5>Platform</h5>
                     <h3 id="rdp">N/A</h3>
+                    <div class="input-group target">
+                      <input type="text" class="form-control" id="wrp" />
+                      <span class="input-group-addon">°C</span>
+                    </div>
                     <button type="button" class="btn btn-default btn-sm" id="clrp">OFF</button>
                 </div>
             </div>
@@ -271,6 +280,10 @@
         <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.navigate.min.js"></script> -->
+        <!-- -->
         <script src="https://rawgit.com/nokemono42/MP-Select-Mini-Web/web-ui-update/dist/webui.js"></script>
+        <!-- --
+        <script src="dist/webui.js"></script>
+        <!-- -->
     </body>
 </html>

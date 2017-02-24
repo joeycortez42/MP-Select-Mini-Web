@@ -37,11 +37,23 @@ h4{ margin-top: 0; }
     box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
 }
 
-#gCodeLog {
+#console {
     min-height: 226px;
+    max-height: 226px;
+    overflow: scroll;
+    padding: 0 8px;
 }
 
+#console p { margin: 0 0 4px; }
+
 #rawgCode { margin-bottom: 20px; }
+
+.temperature .target {
+    width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+}
 
 /*.dropzone {
     min-height: 150px;

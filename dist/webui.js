@@ -9,10 +9,11 @@ $(document).ready( function() {
     $.get("inquiry", function(data, status) {
       console.log( data );
 
-      $("#gCodeLog").append( data + '<br />' );
+      $("#gCodeLog").append( '<p class="text-muted">' + data + '</p>'  );
+      scrollConsole();
 
-      $("#rde").text( data.match(/\d+/g)[0] );
-      $("#rdp").text( data.match(/\d+/g)[2] );
+      $("#rde").text( data.match( /\d+/g )[0] );
+      $("#rdp").text( data.match( /\d+/g )[2] );
 
       var c = data.charAt( data.length - 1 );
 
@@ -21,37 +22,75 @@ $(document).ready( function() {
         $("#pgs").css( "width", "0%" );
       } else if (c == 'P') {
         $("#stat").text( "Printing" );
-        $("#pgs").css( "width", data.match(/\d+/g)[4] + "%" );
-        $("#pgs").html( data.match(/\d+/g)[4] + "% Complete" );
-      } else $("#stat").text( "" );
-    });
-  }, 10000);
+        $("#pgs").css( "width", data.match( /\d+/g )[4] + "%" );
+        $("#pgs").html( data.match( /\d+/g )[4] + "% Complete" );
+      } else $("#stat").text( "N/A" );
+    } );
+  }, 3000);
 
-  $("#clre").click(function() {
-    $.ajax({ url: "set?cmd={C:T0000}", cache: false }).done( function(html) {} );
-  });
+  $("#wre").change( function(){
+    var value = pad( $("#wre").val(), 3 );
+    sendCmd( 'T0' + value );
+    $.ajax({ url: 'set?cmd={C:T0' + value + '}', cache: false }).done( function(data) { feedback( data ); } );
+  } );
 
-  $("#clrp").click(function() {
-    $.ajax({ url: "set?cmd={C:P000}", cache: false }).done( function(html) {} );
-  });
-});
+  $("#clre").click( function() {
+    sendCmd( 'T0000' );
+    $.ajax({ url: "set?cmd={C:T0000}", cache: false }).done( function(data) { feedback( data ); } );
+  } );
+
+  $("#wrp").change( function(){
+    value = pad( $("#wrp").val(), 3 );
+    sendCmd( 'P' + value  );
+    $.ajax({ url: 'set?cmd={C:P' + value + '}', cache: false }).done( function(data) { feedback( data ); } );
+  } );
+
+  $("#clrp").click( function() {
+    sendCmd( 'P000' );
+    $.ajax({ url: "set?cmd={C:P000}", cache: false }).done( function(data) { feedback( data ); } );
+  } );
+
+  $('form').submit( function() {
+    return false;
+  } );
+} );
+
+function pad( num, size ) {
+  s = '000' + num;
+  return s.substr( s.length-size );
+}
+
+function scrollConsole() {
+  $cont = $('#console');
+  $cont[0].scrollTop = $cont[0].scrollHeight;
+}
+
+function sendCmd( cmd ) {
+  $("#gCodeLog").append( '<p class="text-primary">' + cmd + '</p>'  );
+  scrollConsole();
+}
+
+function feedback( output ) {
+  $("#gCodeLog").append( '<p class="text-warning">' + output + '</p>'  );
+  scrollConsole();
+}
 
 function start_p() {
+  $("#gCodeLog").append( '<p class="text-primary">M565</p>' );
+  scrollConsole();
   $.ajax({ url: "set?code=M565", cache: false }).done( function( html ) {} );
 }
 
 function cancel_p() {
+  $("#gCodeLog").append( '<p class="text-primary">{P:X}</p>' );
+  scrollConsole();
   $.ajax({ url: "set?cmd={P:X}", cache: false }).done( function( html ) {} );
 }
 
 
 /*$tooQuick = false;
 $extruderTemp = '0';
-$bedTemp = '0';
-function pad(num, size) {
-var s = "000" + num;
-return s.substr(s.length - size);
-}*/
+$bedTemp = '0';*/
 
 /*var gCodeLog = document.getElementById("gCodeLog");
 $("#newDropzone").addClass('disabledbutton');
@@ -61,12 +100,11 @@ $("#rawgCode").addClass('disabledbutton');
 setInterval(function() {
 $.get("inquiry", function(data, status) {
 console.log(data);
-//                $('#gCodeLog').append('<br>'+data);
-$("#rde").text(data.match(/\d+/g)[0]);
+
 //$("#rdeTarget").text(data.match(/\d+/g)[1]);
 var exTgt = data.match(/\d+/g)[1];
 if (exTgt>30 || exTgt==0) $("#rdeTarget").text(exTgt);
-$("#rdp").text(data.match(/\d+/g)[2]);
+
 $("#rdpTarget").text(data.match(/\d+/g)[3]);
 $extruderTemp = data.match(/\d+/g)[0];
 $extruderTarget = data.match(/\d+/g)[1];
@@ -130,7 +168,6 @@ this.removeFile(this.files[0]);
 });
 }
 };
-
 
 
 $('#sendRAWgCode').click(function() {
