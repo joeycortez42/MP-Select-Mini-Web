@@ -5,7 +5,7 @@ Version: 1.1;
 */
 
 $(document).ready( function() {
-  //setInterval( function() {
+  setInterval( function() {
     $.get("inquiry", function(data, status) {
       console.log( data );
 
@@ -25,7 +25,7 @@ $(document).ready( function() {
         $("#pgs").html( data.match(/\d+/g)[4] + "% Complete" );
       } else $("#stat").text( "" );
     });
-  //}, 10000);
+  }, 10000);
 
   $("#clre").click(function() {
     $.ajax({ url: "set?cmd={C:T0000}", cache: false }).done( function(html) {} );
@@ -97,12 +97,7 @@ url: 'set?cmd={C:T0' + value + '}',
 cache: false
 }).done(function(html) {});
 });
-$("#clre").click(function() {
-$.ajax({
-url: "set?cmd={C:T0000}",
-cache: false
-}).done(function(html) {});
-});
+
 $("#setp").click(function() {
 var value = pad($("#wrp").val(), 3);
 $.ajax({
@@ -110,11 +105,7 @@ url: 'set?cmd={C:P' + value + '}',
 cache: false
 }).done(function(html) {});
 });
-$("#clrp").click(function() {
-$.ajax({
-url: "set?cmd={C:P000}",
-cache: false
-}).done(function(html) {});
+
 });
 });
 String.prototype.contains = function(it) {
