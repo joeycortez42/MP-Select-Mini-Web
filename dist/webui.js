@@ -18,15 +18,15 @@ $(document).ready( function() {
       var c = data.charAt( data.length - 1 );
 
       if (c == 'I') {
-        $("#stat").text( "Idle" );
-        $("#pgs").css( "width", "0%" );
+        $("#stat").text( 'Idle' );
+        $("#pgs").css( 'width', '0%' );
       } else if (c == 'P') {
-        $("#stat").text( "Printing" );
-        $("#pgs").css( "width", data.match( /\d+/g )[4] + "%" );
-        $("#pgs").html( data.match( /\d+/g )[4] + "% Complete" );
-      } else $("#stat").text( "N/A" );
+        $("#stat").text( 'Printing' );
+        $("#pgs").css( 'width', data.match( /\d+/g )[4] + '%' );
+        $("#pgs").html( data.match( /\d+/g )[4] + '% Complete' );
+      } else $("#stat").text( 'N/A' );
     } );
-  }, 3000);
+  }, 4000);
 
   $("#wre").change( function(){
     var value = pad( $("#wre").val(), 3 );
@@ -36,7 +36,7 @@ $(document).ready( function() {
 
   $("#clre").click( function() {
     sendCmd( 'T0000' );
-    $.ajax({ url: "set?cmd={C:T0000}", cache: false }).done( function(data) { feedback( data ); } );
+    $.ajax({ url: 'set?cmd={C:T0000}', cache: false }).done( function(data) { feedback( data ); } );
   } );
 
   $("#wrp").change( function(){
@@ -47,10 +47,10 @@ $(document).ready( function() {
 
   $("#clrp").click( function() {
     sendCmd( 'P000' );
-    $.ajax({ url: "set?cmd={C:P000}", cache: false }).done( function(data) { feedback( data ); } );
+    $.ajax({ url: 'set?cmd={C:P000}', cache: false }).done( function(data) { feedback( data ); } );
   } );
 
-  $('form').submit( function() {
+  $("form").submit( function() {
     return false;
   } );
 } );
@@ -61,7 +61,7 @@ function pad( num, size ) {
 }
 
 function scrollConsole() {
-  $cont = $('#console');
+  $cont = $("#console");
   $cont[0].scrollTop = $cont[0].scrollHeight;
 }
 
@@ -76,15 +76,15 @@ function feedback( output ) {
 }
 
 function start_p() {
-  $("#gCodeLog").append( '<p class="text-primary">M565</p>' );
-  scrollConsole();
-  $.ajax({ url: "set?code=M565", cache: false }).done( function( html ) {} );
+  $("#stat").text( 'Printing' );
+  sendCmd( 'M565' );
+  $.ajax({ url: 'set?code=M565', cache: false }).done( function(data) { feedback( data ); } );
 }
 
 function cancel_p() {
-  $("#gCodeLog").append( '<p class="text-primary">{P:X}</p>' );
-  scrollConsole();
-  $.ajax({ url: "set?cmd={P:X}", cache: false }).done( function( html ) {} );
+  $("#stat").text( 'Canceling' );
+  sendCmd( '{P:X}' );
+  $.ajax({ url: 'set?cmd={P:X}', cache: false }).done( function(data) { feedback( data ); } );
 }
 
 
@@ -331,7 +331,7 @@ function getData() {
 data = data.slice(1);
 while (data.length < totalPoints) {
 var x = new Date($.now());
-var y = $extruderTemp; 
+var y = $extruderTemp;
 data.push(y);
 }
 var res = [];
@@ -345,7 +345,7 @@ function getData2() {
 data2 = data2.slice(1);
 while (data2.length < totalPoints) {
 var x = new Date($.now());
-var y = $bedTemp; 
+var y = $bedTemp;
 data2.push(y);
 }
 var res2 = [];
@@ -409,7 +409,7 @@ interactive: true
 var tempChart = $("#tempChart");
 var tempChart2 = $("#tempChart2");
 
-// add zoom out button 
+// add zoom out button
 $("<div class=\"btn btn-default\" style=\"display: block; width: 40px; float: right; position: relative; top: 10px; right: 10px;\"><i class=\"fa fa-search-minus\"></i></div>").appendTo(tempChart).click(function (event) {
 event.preventDefault();
 plot.zoomOut();

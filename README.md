@@ -20,7 +20,7 @@ While you want to update the UI of the printer, you don't want the web server on
 
 ## Enable Faster Wifi File Transfers
 
-The final step is to speed up your Wi-Fi uploading by pasting, `M563 S6 ;` in the "send gCode to printer" box and hitting send. You will need to send that gcode after every power cycle, though.
+The final step is to speed up your Wi-Fi uploading by pasting, `M563 S6` in the "send gCode to printer" box and hitting send. You will need to send that gcode after every power cycle, though.
 
 ## Troubleshooting
 
