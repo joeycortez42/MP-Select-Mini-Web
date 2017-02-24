@@ -52,8 +52,28 @@ h4 { margin-top: 0; }
     text-align: center;
 }
 
-.dropzone .dz-preview { margin: 0; }
+.dropzone .dz-preview {
+    width: 100%;
+    margin: 0;
+}
+
 .dropzone .dz-preview .dz-image { display: none; }
+
+.dropzone .dz-preview .dz-details {
+    top: 50%;
+    color: inherit;
+}
+
+.dropzone .dz-preview .dz-progress {
+    left: 0;
+    width: 100%;
+    margin-left: 0;
+}
+
+.dropzone .dz-preview .dz-success-mark,
+.dropzone .dz-preview .dz-error-mark { top: 40%; }
+
+.dropzone .dz-preview .dz-error-mark svg g { fill: rgb(255, 0, 0); }
 
 #console {
     min-height: 226px;
