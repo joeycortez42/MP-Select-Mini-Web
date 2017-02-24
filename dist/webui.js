@@ -38,12 +38,24 @@ $(document).ready( function() {
     $.ajax({ url: 'set?cmd={C:T0' + value + '}', cache: false }).done( function(data) { feedback( data ); } );
   } );
 
+  $("#sete").click( function(){
+    var value = pad( $("#wre").val(), 3 );
+    sendCmd( 'T0' + value );
+    $.ajax({ url: 'set?cmd={C:T0' + value + '}', cache: false }).done( function(data) { feedback( data ); } );
+  } );
+
   $("#clre").click( function() {
     sendCmd( 'T0000' );
     $.ajax({ url: 'set?cmd={C:T0000}', cache: false }).done( function(data) { feedback( data ); } );
   } );
 
   $("#wrp").change( function(){
+    value = pad( $("#wrp").val(), 3 );
+    sendCmd( 'P' + value  );
+    $.ajax({ url: 'set?cmd={C:P' + value + '}', cache: false }).done( function(data) { feedback( data ); } );
+  } );
+
+  $("#setp").click( function(){
     value = pad( $("#wrp").val(), 3 );
     sendCmd( 'P' + value  );
     $.ajax({ url: 'set?cmd={C:P' + value + '}', cache: false }).done( function(data) { feedback( data ); } );
