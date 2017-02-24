@@ -1,0 +1,155 @@
+/*
+Name: MP Select Mini Web CSS
+URL: https://github.com/nokemono42/MP-Select-Mini-Web
+Version: 1.1;
+*/
+
+h3 { margin-bottom: 20px; }
+
+h4{ margin-top: 0; }
+
+.progress { height: 25px; }
+.progress .progress-bar { padding-top: 3px; }
+
+.webcam { margin-bottom: 20px; }
+.webcam img { width: 100%; }
+
+.print-actions button {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.dropzone {
+    min-height: 20px;
+    padding: 74px 50px;
+    margin-bottom: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+}
+
+#gCodeLog {
+    min-height: 226px;
+}
+
+#rawgCode { margin-bottom: 20px; }
+
+/*.dropzone {
+    min-height: 150px;
+    border: 2px solid rgba(0,0,0,0.3);
+    background: white;
+    padding: 54px 54px
+}
+
+
+.dropzone {
+    min-height: 40px;
+    padding: 0px;
+    background: #e6f9ff;
+    border-radius: 10px;
+}
+
+.dropzone .dz-message { margin: 1em; }
+*
+
+
+.disabledbutton {
+pointer-events: none;
+opacity: 0.4;
+}
+#rawgCode {
+margin-bottom: 10px;
+}
+
+#eStop {
+display: block;
+margin: 30px auto;
+-webkit-filter: grayscale(70%);
+/* Chrome, Safari, Opera *
+filter: grayscale(70%);
+}
+
+#eStop:hover {
+cursor: pointer;
+-webkit-filter: grayscale(0%);
+/* Chrome, Safari, Opera *
+filter: grayscale(0%);
+}
+
+.topBar {
+background: rgb(255, 255, 255);
+/* Old browsers *
+background: -moz-linear-gradient(left, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 1) 50%, rgba(226, 226, 226, 1) 100%);
+/* FF3.6-15 *
+background: -webkit-linear-gradient(left, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 1) 50%, rgba(226, 226, 226, 1) 100%);
+/* Chrome10-25,Safari5.1-6 *
+background: linear-gradient(to right, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 1) 50%, rgba(226, 226, 226, 1) 100%);
+/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ *
+filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e2e2e2', GradientType=1);
+/* IE6-9 *
+border: 1px solid #c5c5c5;
+margin-bottom: 10px;
+}
+
+#controls {
+/*
+-webkit-filter: grayscale(100%);
+filter: grayscale(100%);
+pointer-events:none;
+*
+}
+
+.homeIt {
+margin-bottom: 4px;
+}
+
+.jogdial {
+min-width: 30px;
+min-height: 26px;
+padding: 0px;
+border-radius: 0px !important;
+margin-bottom: 1px;
+font-size: 10px;
+}
+
+.jogitem {
+text-align: center;
+}
+
+.controlBox {
+border: 2px solid #b3b3b3;
+padding: 0px 0px 10px 0px;
+margin-bottom: 10px;
+}
+#movement {
+background: #d9edf7;
+font-size: 20px;
+font-weight: 600;
+text-align: center;
+margin-bottom: 10px;
+border-bottom: 2px solid #b3b3b3;
+}
+
+.unkPos {
+color: #ff0000;
+}
+#gCodeLog {
+min-height: 104px;
+max-height: 104px;
+border: 1px solid #b3b3b3;
+margin-bottom: 2px;
+background: #e6f9ff;
+padding: 2px 10px;
+overflow: auto;
+color: #000000;
+font-size: 10px;
+}
+span.ui-slider-handle.ui-corner-all.ui-state-default {
+background: #337ab7;
+}
+
+#fanSlider {
+background: #e6f9ff;
+}

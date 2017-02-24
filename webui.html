@@ -1,61 +1,80 @@
-
 <html>
-  <head>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.navigate.min.js"></script>
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.css" />
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css" />
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" />
-<link rel="stylesheet" href="http://malyansys.com/js/webui160910.css"/>
-	</head>
-  <body>
-    <div id="dropzone" style="display:none;">
-      <form action="/upload" class="dropzone" id="mydz" />
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css" />
+        <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" />-->
+        <link rel="stylesheet" href="https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/web-ui-update/webui.css"/>
+        <!-- <link rel="stylesheet" href="webui.css"/> -->
+    </head>
+    <body>
+<div id="page" class="container-fluid">
+    <h3 class="text-center">Printer Status: <span id="stat">N/A</span></h3>
+
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped active" id="pgs" role="progressbar"></div>
     </div>
-<div id="mainPage" class="container-fluid">
+
     <div class="row">
-        <div class="col-xs-12">
-            <div class="hero-unit topBar">
-
-                <div class="col-xs-12 col-md-4"></div>
-                <div class="col-xs-12 col-md-4">
-                    <h1 style="text-align: center;">Malyan Desktop 3D Printer</h1>
-
-                    <div style="text-align: center; max-width: 400px; margin:30px auto;">
-                      <strong>Print Status: <span id="stat">N/A</span></strong>
-                      <div class="progress"  style="margin-bottom: 10px; height: 30px;border: 1px solid #b3b3b3;">
-                          <div class="progress-bar progress-bar-striped active" role="progressbar" id="pgs" style="padding-top: 4px;"></div>
-                      </div>
-
-                      <div class="row">
-                        <div class="col-md-6">
-                            <button class="btn btn-success btn-block" type="button" onclick="start_p()"><i class="fa fa-check"></i> Start Print</button>
-                        </div>
-                        <div class="col-md-6">
-                            <button class="btn btn-danger btn-block" type="button" onclick="cancel_p()"><i class="fa fa-ban"></i> Cancel Print</button>
-                        </div>
-                      </div>
-                      <div class="clearfix"></div>
-                      <div id="newDropzone" style="margin-top: 10px;"></div>
-
-                    </div>
-
-
+        <div class="col-xs-12 col-md-4 webcam text-center">
+            <img class="img-rounded" src="https://images.monoprice.com/productlargeimages/153651.jpg">
+        </div>
+        <div class="col-xs-12 col-md-4 print-actions">
+            <div class="row">
+                <div class="col-xs-6">
+                    <button class="btn btn-success" type="button" onclick="start_p()">Start Print</button>
                 </div>
-                <div class="col-xs-12 col-md-4" style="text-align: center;"><img src="http://mpselectmini.com/mpselect/webui/estop.png" id="eStop" class=""></div>
-                <div class="clearfix"></div>
+                <div class="col-xs-6">
+                    <button class="btn btn-danger" type="button" onclick="cancel_p()">Cancel Print</button>
+                </div>
             </div>
+            
+            <div class="clearfix"></div>
+            <div id="dropzone">
+                <form action="/upload" class="dropzone" id="mydz" />
+            </div>
+            <!--<div id="newDropzone" style="margin-top: 10px;"></div>-->
+        </div>
+        <div class="col-xs-12 col-md-4">
+            
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-md-4">
+        </div>
+        <div class="col-xs-12 col-md-4">
+            <div id="gCodeLog" class="well"></div>
+            <div id="rawgCode" class="input-group">
+                <input type="text" class="form-control" name="gcode" id="gcode" placeholder="Send gCode to printer...">
+                <span class="input-group-btn">
+                    <button class="btn btn-warning" id="sendRAWgCode">Send</button>
+                </span>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-4">
+            <h4 class="text-center">Temperature</h4>
+            <div class="row">
+                <div class="col-xs-6 text-center">
+                    <h5>Extruder</h5>
+                    <h3 id="rde">N/A</h3>
+                    <button type="button" class="btn btn-default btn-sm" id="clre">OFF</button>
+                </div>
+                <div class="col-xs-6 text-center">
+                    <h5>Platform</h5>
+                    <h3 id="rdp">N/A</h3>
+                    <button type="button" class="btn btn-default btn-sm" id="clrp">OFF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <!-- <div class="row">
+        <div class="col-xs-12">
 
             <div class="row" id="controls" disabled>
                 <div class="col-md-6">
-                    <div id="gCodeLog" class=""></div>
-                    <div id="rawgCode" class="input-group">
-                        <input class="form-control" type="text" name="gcode" id="gcode" placeholder="Send gCode to printer..."><span class="input-group-btn"><button id="sendRAWgCode" class="btn btn-warning"><i class="fa fa-send" aria-hidden="true"></i> Send</button></span>
-                    </div>
+                    
 
                     <div class="col-xs-12 controlBox">
                                                                                <div class="col-xs-12" id="movement">Movement</div>
@@ -185,7 +204,7 @@
                     <div class="clearfix"></div>
 
                 </div>
-                <div class="col-md-6">
+          !--      <div class="col-md-6">
 
                     <div class="col-xs-12" style="text-align: center; margin-bottom: 10px;">
                       <div class="col-xs-4"><strong>Fan Speed: <span id="fanAmount"style="border: 3px solid #b3b3b3; padding: 6px; border-radius: 2px; margin-right: 10px;">Off</span></strong></div>
@@ -234,9 +253,14 @@
                 <div class="col-md-4"></div>
             </div>
         </div>
-    </div>
+    </div>-->
 </div>
-<script src="http://malyansys.com/js/webui160910.js"></script>
-
-  </body>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js"></script>
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.navigate.min.js"></script> -->
+        <script src="https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/web-ui-update/webui.js"></script>
+    </body>
 </html>

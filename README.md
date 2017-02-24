@@ -33,5 +33,25 @@ Did something break? Here's how you can undo the Web UI upgrade.
 ## Credits
 
 Jason Jones (Original Code)
+
 Matthew Upp (Middle Man / Beta Tester)
+
 Mario Anthony Galliano (Facebook posting with upgrade/downgrade instructions.)
+
+Joey Cortez
+
+## To Dos
+
+* Show time lasped / time remaining
+* Show filename that is printing
+* Change multiplier
+* Rename cache.gc file with M566 after upload
+* Print done / presentation button. (Gantry away put all the way forward.)
+* Preheat off button
+* Disengage motors
+* Query SD card for list of files
+* Delete file from SD card
+* Print file from SD card
+* Rename file from SD card
+* Refresh SD card
+* Layers # of ##
