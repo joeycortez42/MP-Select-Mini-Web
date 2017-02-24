@@ -14,13 +14,13 @@ While you want to update the UI of the printer, you don't want the web server on
 4. On the upgrade page, there are three options. We are only concerned with the last one, "Upload web." DO NOT CLICK THIS YET.
 5. On the same line as "Upload web" click "Choose file" and select the "webui.html" file from the folder you unzipped earlier.
 6. NOW you can click "Upload web."
-6. If things worked, the response will display one word only. If you see "OK" you are good to go! 
+6. If things worked, the response will display one word only. If you see "OK" you are good to go!
 7. It's recommended you power cycle your printer at this point.
-8. Once your printer is back online, browse to `http://IPAddressHere`. You should now have the upgraded web UI with full manual control. 
+8. Once your printer is back online, browse to `http://IPAddressHere`. You should now have the upgraded web UI with full manual control.
 
 ## Enable Faster Wifi File Transfers
 
-The final step is to speed up your Wi-Fi uploading by pasting, `M563 S6` in the "send gCode to printer" box and hitting send. You will need to send that gcode after every power cycle, though.
+The final step is to speed up your Wi-Fi uploading by pasting, `M563 S6` in the "send GCode to printer" box and hitting send. You will need to send that GCode after every power cycle, though.
 
 ## Troubleshooting
 

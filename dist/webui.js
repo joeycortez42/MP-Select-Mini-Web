@@ -5,6 +5,10 @@ Version: 1.1;
 */
 
 $(document).ready( function() {
+  // Enable Fater Wifi On Restart
+  sendCmd( 'M563 S6' );
+  $.ajax({ url: 'set?code=M563 S6', cache: false }).done( function(data) { feedback( data ); } );
+
   setInterval( function() {
     $.get("inquiry", function(data, status) {
       console.log( data );
