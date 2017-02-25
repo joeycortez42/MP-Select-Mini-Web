@@ -6,26 +6,28 @@ Version: 1.1;
 
 $(document).ready( function() {
   // Enable Fater Wifi On Restart
-  sendCmd( 'M563 S6' );
+  sendCmd( 'M563 S6', 'Enable faster WiFi File Transfer' );
   $.ajax({ url: 'set?code=M563 S6', cache: false }).done( function(data) { feedback( data ); } );
 
   setInterval( function() {
     $.get("inquiry", function(data, status) {
       console.log( data );
 
-      $("#gCodeLog").append( '<p class="text-muted">' + data + '</p>'  );
-      scrollConsole();
+      //$("#gCodeLog").append( '<p class="text-muted">' + data + '</p>'  );
+      //scrollConsole();
 
       $("#rde").text( data.match( /\d+/g )[0] );
+      $("#wre").val( data.match( /\d+/g )[1] );
       $("#rdp").text( data.match( /\d+/g )[2] );
+      $("#wrp").val( data.match( /\d+/g )[3] );
 
       var c = data.charAt( data.length - 1 );
 
-      if (c == 'I') {
+      if ( c == 'I' ) {
         $("#stat").text( 'Idle' );
         $("#pgs").css( 'width', '0%' );
         $("#gCodeSend").removeClass( 'btn-disable' );
-      } else if (c == 'P') {
+      } else if ( c == 'P' ) {
         $("#stat").text( 'Printing' );
         $("#pgs").css( 'width', data.match( /\d+/g )[4] + '%' );
         $("#pgs").html( data.match( /\d+/g )[4] + '% Complete' );
@@ -36,42 +38,47 @@ $(document).ready( function() {
 
   $("#wre").change( function(){
     var value = pad( $("#wre").val(), 3 );
-    sendCmd( 'T0' + value );
+    sendCmd( 'T0' + value, 'Set Extruder Preheat to ' + $("#wre").val() + '°C' );
     $.ajax({ url: 'set?cmd={C:T0' + value + '}', cache: false }).done( function(data) { feedback( data ); } );
   } );
 
   $("#sete").click( function(){
     var value = pad( $("#wre").val(), 3 );
-    sendCmd( 'T0' + value );
+    sendCmd( 'T0' + value, 'Set Extruder Preheat to ' + $("#wre").val() + '°C' );
     $.ajax({ url: 'set?cmd={C:T0' + value + '}', cache: false }).done( function(data) { feedback( data ); } );
   } );
 
   $("#clre").click( function() {
-    sendCmd( 'T0000' );
+    sendCmd( 'T0000', 'Turn off Extruder Preheat' );
     $.ajax({ url: 'set?cmd={C:T0000}', cache: false }).done( function(data) { feedback( data ); } );
   } );
 
   $("#wrp").change( function(){
     value = pad( $("#wrp").val(), 3 );
-    sendCmd( 'P' + value  );
+    sendCmd( 'P' + value, 'Set Platform Preheat to ' + $("#wrp").val() + '°C' );
     $.ajax({ url: 'set?cmd={C:P' + value + '}', cache: false }).done( function(data) { feedback( data ); } );
   } );
 
   $("#setp").click( function(){
     value = pad( $("#wrp").val(), 3 );
-    sendCmd( 'P' + value  );
+    sendCmd( 'P' + value, 'Set Platform Preheat to ' + $("#wrp").val() + '°C' );
     $.ajax({ url: 'set?cmd={C:P' + value + '}', cache: false }).done( function(data) { feedback( data ); } );
   } );
 
   $("#clrp").click( function() {
-    sendCmd( 'P000' );
+    sendCmd( 'P000', 'Turn off Platform Preheat' );
     $.ajax({ url: 'set?cmd={C:P000}', cache: false }).done( function(data) { feedback( data ); } );
   } );
 
-  $('#gCodeSend').click(function() {
+  $('#gCodeSend').click( function() {
     gCode2Send = $('#gcode').val();
-    if (gCode2Send == '') return;
+    if ( gCode2Send == '' ) return;
     $.ajax({ url: "set?code=" + gCode2Send, cache: false }).done( function(data) { feedback( data ); } );
+    $('#gcode').val( '' );
+  } );
+
+  $(".arrow").click( function() {
+    alert( $(this).attr("class").split(' ') );
   });
 
   $("form").submit( function() {
@@ -89,8 +96,8 @@ function scrollConsole() {
   $cont[0].scrollTop = $cont[0].scrollHeight;
 }
 
-function sendCmd( cmd ) {
-  $("#gCodeLog").append( '<p class="text-primary">' + cmd + '</p>'  );
+function sendCmd( cmd, comment ) {
+  $("#gCodeLog").append( '<p class="text-primary">' + cmd + ' <span class="text-muted">; ' + comment +'</span></p>'  );
   scrollConsole();
 }
 
@@ -122,58 +129,18 @@ Dropzone.options.mydz = { dictDefaultMessage: "Upload GCode here",accept: functi
 
 function start_p() {
   $("#stat").text( 'Printing' );
-  sendCmd( 'M565' );
+  sendCmd( 'M565', 'Start printing cache.gc' );
   $.ajax({ url: 'set?code=M565', cache: false }).done( function(data) { feedback( data ); } );
 }
 
 function cancel_p() {
   $("#stat").text( 'Canceling' );
-  sendCmd( '{P:X}' );
+  sendCmd( '{P:X}', 'Cancel print' );
   $.ajax({ url: 'set?cmd={P:X}', cache: false }).done( function(data) { feedback( data ); } );
 }
 
-/*$tooQuick = false;
-$extruderTemp = '0';
-$bedTemp = '0';*/
+/*
 
-/*var gCodeLog = document.getElementById("gCodeLog");
-$("#newDropzone").addClass('disabledbutton');
-$(".controlBox").addClass('disabledbutton');
-$("#rawgCode").addClass('disabledbutton');
-
-setInterval(function() {
-$.get("inquiry", function(data, status) {
-console.log(data);
-
-//$("#rdeTarget").text(data.match(/\d+/g)[1]);
-var exTgt = data.match(/\d+/g)[1];
-if (exTgt>30 || exTgt==0) $("#rdeTarget").text(exTgt);
-
-$("#rdpTarget").text(data.match(/\d+/g)[3]);
-$extruderTemp = data.match(/\d+/g)[0];
-$extruderTarget = data.match(/\d+/g)[1];
-$bedTemp = data.match(/\d+/g)[2];
-$bedTarget = data.match(/\d+/g)[3];
-var c = data.charAt(data.length - 1);
-if (c == 'I') {
-$("#stat").text("Idle");
-$("#pgs").css("width", "0%");
-$("#newDropzone").removeClass('disabledbutton');
-$(".controlBox").removeClass('disabledbutton');
-$("#rawgCode").removeClass('disabledbutton');
-} else if (c == 'P') {
-  $("#newDropzone").addClass('disabledbutton');
-  $(".controlBox").addClass('disabledbutton');
-  $("#rawgCode").addClass('disabledbutton');
-  $("#stat").text("Printing");
-  $("#pgs").css("width", data.match(/\d+/g)[4] + "%");
-  $("#pgs").html(data.match(/\d+/g)[4] + "%");
-} else $("#stat").text(" ");
-});
-}, 5000);
-
-});
-});
 
 $('#eStop').click(function() {
 $.ajax({
