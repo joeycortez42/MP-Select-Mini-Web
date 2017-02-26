@@ -1,7 +1,7 @@
 /*
 Name: MP Select Mini Web CSS
 URL: https://github.com/nokemono42/MP-Select-Mini-Web
-Version: Alpha 0.54;
+Version: Alpha 0.6;
 */
 
 html { font-size: 16px; }
@@ -106,6 +106,15 @@ footer {
 .dropzone .dz-preview .dz-success-mark svg g path { fill: #2C9040; }
 .dropzone .dz-preview .dz-error-mark svg g { fill: #FF2F3C; }
 
+.movement .row { margin-bottom: 20px; }
+
+.movement .direction {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.rate .center-block { width: 196px; }
+
 #console {
     min-height: 226px;
     max-height: 226px;
@@ -143,49 +152,3 @@ footer {
 .slider.slider-vertical { height: 186px; }
 
 #fanspeed .slider-selection { background: #0272b6; }
-
-/*
-
-#controls {
-/*
--webkit-filter: grayscale(100%);
-filter: grayscale(100%);
-pointer-events:none;
-*
-}
-
-.homeIt {
-margin-bottom: 4px;
-}
-
-.jogdial {
-min-width: 30px;
-min-height: 26px;
-padding: 0px;
-border-radius: 0px !important;
-margin-bottom: 1px;
-font-size: 10px;
-}
-
-.jogitem {
-text-align: center;
-}
-
-.controlBox {
-border: 2px solid #b3b3b3;
-padding: 0px 0px 10px 0px;
-margin-bottom: 10px;
-}
-
-#movement {
-background: #d9edf7;
-font-size: 20px;
-font-weight: 600;
-text-align: center;
-margin-bottom: 10px;
-border-bottom: 2px solid #b3b3b3;
-}
-
-.unkPos {
-color: #ff0000;
-}

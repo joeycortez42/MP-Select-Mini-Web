@@ -1,7 +1,7 @@
 /*
 Name: MP Select Mini Web Javascript
 URL: https://github.com/nokemono42/MP-Select-Mini-Web
-Version: Alpha 0.54;
+Version: Alpha 0.6;
 */
 
 $(document).ready( function() {
@@ -34,6 +34,41 @@ $(document).ready( function() {
       } else $("#stat").text( 'N/A' );
     } );
   }, 4000);
+
+  $(".movement .home").click( function() {
+    axis = $(this).attr( "data-axis" );
+
+    if (axis == 'all') {
+      code = 'G28';
+      comment = 'all axes';
+    } else {
+      code = 'G28 ' + axis;
+      comment = axis + ' axis';
+    }
+
+    sendCmd( code, 'Home ' + comment );
+    $.ajax({ url: "set?code=" + code, cache: false }).done( function(data) { feedback( data ); } );
+  } );
+
+  $(".movement .direction button").click( function() {
+    movement = $(this).attr( "data-movement" );
+    rate = $(".movement .rate button.active").attr( "data-rate" );
+    axis = $(this).attr( "data-axis" );
+    comment = 'Move ' + axis;
+    if ( movement == 'down' || movement == 'left' ) { rate = rate * -1; }
+    if ( axis == 'E' && movement == 'plus' ) { comment = 'Extrude '; }
+    if ( axis == 'E' && movement == 'minus' ) { comment = 'Retract '; }
+
+    sendCmd( 'G1 ' + axis + rate, comment + ' ' + rate + 'mm' );
+
+  } );
+
+  $(".movement .rate button").click( function() {
+    rate = $(this).attr( "data-rate" );
+    $(".movement .rate button").removeClass( 'active' );
+    $(this).addClass( 'active' );
+    //sendCmd( '', 'Movement rate ' + rate );
+  } );
 
   $('#gCodeSend').click( function() {
     gCode2Send = $('#gcode').val();
@@ -79,7 +114,7 @@ $(document).ready( function() {
   } );
 
   $("#fanspeed").slider({
-    min: 0, max: 100, value: 50,
+    min: 30, max: 100, value: 50,
     reversed : true, orientation: 'vertical',
     formatter: function(value) {
       return value + '%';
@@ -166,118 +201,7 @@ function delaySendSpeed( value ) {
 function delaySyncTemperatures( extruder, platform ) {
   clearTimeout( timers );
   timers = setTimeout( function() {
-    $("#wre").val( extruder );
-    $("#wrp").val( platform );
+    if ( extruder != 0 ) { $("#wre").val( extruder ); }
+    if ( platform != 0 ) { $("#wrp").val( platform ); }
   }, 3000 );
 }
-
-/*
-
-$('.homeIt').click(function() {
-var doWhat = $(this).data('id');
-var whatAxis = $(this).data('axis');
-$.ajax({
-url: "set?code=G28 " + doWhat,
-cache: false
-}).done(function(html) {
-$('#gCodeLog').append("<br>G28 " +doWhat);
-gCodeLog.scrollTop = gCodeLog.scrollHeight;
-if (whatAxis == 'XYZ') {
-$('#posX, #posY, #posZ').val('0');
-$('#posX, #posY, #posZ').removeClass('unkPos');
-$axisX = '0';
-$axisY = '0';
-$axisZ = '0';
-} else if (whatAxis == 'XY') {
-$('#posX, #posY').val('0');
-$('#posX, #posY').removeClass('unkPos');
-$axisX = '0';
-$axisY = '0';
-} else {
-$('#pos' + whatAxis).val('0');
-$('#pos' + whatAxis).removeClass('unkPos');
-switch(whatAxis) {
-case 'X':
-$axisX = '0';
-break;
-case 'Y':
-$axisY = '0';
-break;
-case 'Z':
-$axisZ = '0';
-break;
-}
-}
-});
-});
-
-$axisX = '0';
-$axisY = '0';
-$axisZ = '0';
-
-function atMax(){
-$('#movement').html('<span style="color: #ff0000;">MAX Movement!</span>');
-setTimeout(function(){
-$('#movement').html('Movement');
-}, 500);
-}
-
-$('.moveIt').click(function() {
-if($tooQuick == true){
-$('#movement').html('<span style="color: #ff0000;">SLOW DOWN!</span>');
-setTimeout(function(){
-$('#movement').html('Movement');
-}, 100);
-return;
-}
-var doSpeed = $(this).data('speed');
-var doWhat = $(this).data('id');
-var doWhere = $(this).data('axis');
-var axisVal = $('#pos' + doWhere).val()
-axisVal = +doWhat + +axisVal;
-
-switch(doWhere) {
-case 'X':
-$axisX = +$axisX + +doWhat;
-if($axisX >= '125'){
-atMax();
-$axisX = +$axisX - +doWhat;
-return;
-}
-break;
-case 'Y':
-$axisY = +$axisY + +doWhat;
-if($axisY >= '125'){
-atMax();
-$axisY = +$axisY - +doWhat;
-return;
-}
-break;
-case 'Z':
-$axisZ = +$axisZ + +doWhat;
-if($axisZ >= '125'){
-atMax();
-$axisZ = +$axisZ - +doWhat;
-return;
-}
-break;
-default:
-}
-
-$tooQuick = true;
-$.ajax({
-url: "set?code=G91",
-cache: false
-}).done(function(html) {});
-$.ajax({
-url: "set?code=G1 " + doSpeed + ' ' + doWhere + doWhat,
-cache: false
-}).done(function(html) {
-$('#pos' + doWhere).val(axisVal);
-$tooQuick = false;
-$('#gCodeLog').append("<br>G90, G1 " + doSpeed + ' ' + doWhere + doWhat);
-gCodeLog.scrollTop = gCodeLog.scrollHeight;
-});
-});
-
-});*/
