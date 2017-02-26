@@ -60,7 +60,7 @@ $(document).ready( function() {
     if ( axis == 'E' && movement == 'minus' ) { comment = 'Retract '; }
 
     sendCmd( 'G1 ' + axis + rate, comment + ' ' + rate + 'mm' );
-
+    $.ajax({ url: "set?code=G1 " + axis + rate, cache: false }).done( function(data) { feedback( data ); } );
   } );
 
   $(".movement .rate button").click( function() {
