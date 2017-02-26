@@ -1,11 +1,10 @@
 /*
 Name: MP Select Mini Web Javascript
 URL: https://github.com/nokemono42/MP-Select-Mini-Web
-Version: 1.1;
+Version: Alpha 0.53;
 */
 
 $(document).ready( function() {
-  // Enable Fater Wifi On Restart
   sendCmd( 'M563 S6', 'Enable faster WiFi File Transfer' );
   $.ajax({ url: 'set?code=M563 S6', cache: false }).done( function(data) { feedback( data ); } );
 
@@ -36,13 +35,20 @@ $(document).ready( function() {
     } );
   }, 4000);
 
-  $("#wre").change( function(){
+  $('#gCodeSend').click( function() {
+    gCode2Send = $('#gcode').val();
+    if ( gCode2Send == '' ) return;
+    $.ajax({ url: "set?code=" + gCode2Send, cache: false }).done( function(data) { feedback( data ); } );
+    $('#gcode').val( '' );
+  } );
+
+  $("#wre").change( function() {
     var value = pad( $("#wre").val(), 3 );
     sendCmd( 'T0' + value, 'Set Extruder Preheat to ' + $("#wre").val() + '°C' );
     $.ajax({ url: 'set?cmd={C:T0' + value + '}', cache: false }).done( function(data) { feedback( data ); } );
   } );
 
-  $("#sete").click( function(){
+  $("#sete").click( function() {
     var value = pad( $("#wre").val(), 3 );
     sendCmd( 'T0' + value, 'Set Extruder Preheat to ' + $("#wre").val() + '°C' );
     $.ajax({ url: 'set?cmd={C:T0' + value + '}', cache: false }).done( function(data) { feedback( data ); } );
@@ -53,13 +59,13 @@ $(document).ready( function() {
     $.ajax({ url: 'set?cmd={C:T0000}', cache: false }).done( function(data) { feedback( data ); } );
   } );
 
-  $("#wrp").change( function(){
+  $("#wrp").change( function() {
     value = pad( $("#wrp").val(), 3 );
     sendCmd( 'P' + value, 'Set Platform Preheat to ' + $("#wrp").val() + '°C' );
     $.ajax({ url: 'set?cmd={C:P' + value + '}', cache: false }).done( function(data) { feedback( data ); } );
   } );
 
-  $("#setp").click( function(){
+  $("#setp").click( function() {
     value = pad( $("#wrp").val(), 3 );
     sendCmd( 'P' + value, 'Set Platform Preheat to ' + $("#wrp").val() + '°C' );
     $.ajax({ url: 'set?cmd={C:P' + value + '}', cache: false }).done( function(data) { feedback( data ); } );
@@ -70,16 +76,22 @@ $(document).ready( function() {
     $.ajax({ url: 'set?cmd={C:P000}', cache: false }).done( function(data) { feedback( data ); } );
   } );
 
-  $('#gCodeSend').click( function() {
-    gCode2Send = $('#gcode').val();
-    if ( gCode2Send == '' ) return;
-    $.ajax({ url: "set?code=" + gCode2Send, cache: false }).done( function(data) { feedback( data ); } );
-    $('#gcode').val( '' );
+  $("#fanspeed").slider({
+    min: 0, max: 100, value: 50,
+    reversed : true, orientation: 'vertical',
+    formatter: function(value) {
+      return value + '%';
+    }
   } );
 
-  $(".arrow").click( function() {
-    alert( $(this).attr("class").split(' ') );
-  });
+  $("#fanspeed").on( 'slide', function( slideEvt )  {
+    delaySendSpeed( slideEvt.value );
+  } );
+
+  $("#clrfan").click( function() {
+    sendCmd( 'M106 S0', 'Turn off Fan' );
+    $.ajax({ url: 'set?cmd=M106 S0', cache: false }).done( function(data) { feedback( data ); } );
+  } );
 
   $("form").submit( function() {
     return false;
@@ -139,31 +151,17 @@ function cancel_p() {
   $.ajax({ url: 'set?cmd={P:X}', cache: false }).done( function(data) { feedback( data ); } );
 }
 
-/*
-
-
-$('#eStop').click(function() {
-$.ajax({
-url: "set?code=M112\nM999",
-cache: false
-}).done(function(html) {
-$('#gCodeLog').append("<br>M112; Emergency Stop!");
-gCodeLog.scrollTop = gCodeLog.scrollHeight;
-alert('Emergency Stop Sent! You will have to cycle power on the printer to get communications back up.');
-});
-
-});
-
-function setFan($fSpeed){
-$.ajax({
-url: "set?code=M106 S" + $fSpeed,
-cache: false
-}).done(function(html) {
-$('#gCodeLog').append("<br>M106 S" + $fSpeed);
-gCodeLog.scrollTop = gCodeLog.scrollHeight;
-});
-
+var timers = {}
+function delaySendSpeed( value ) {
+  clearTimeout( timers );
+  timers = setTimeout( function() {
+    actualSpeed = Math.floor( 255 * (value/100) );
+    sendCmd( 'M106 S0' + actualSpeed, 'Set Fan speed to ' + value + '%' );
+    //$.ajax({ url: "set?code=M106 S" + value[0], cache: false }).done( function(data) { feedback( data ); } );
+  }, 300 );
 }
+
+/*
 
 $('.homeIt').click(function() {
 var doWhat = $(this).data('id');
@@ -271,140 +269,5 @@ $('#gCodeLog').append("<br>G90, G1 " + doSpeed + ' ' + doWhere + doWhat);
 gCodeLog.scrollTop = gCodeLog.scrollHeight;
 });
 });
-$(document).ready(function() {
-$("#dropzone").appendTo("#newDropzone").show();
-$("#tempChart").appendTo("#newTempChart").show();
-});
 
-$(document).ready(function() {
-$(function() {
-var data = [];
-var data2 = [];
-var totalPoints = 300;
-
-function getData() {
-data = data.slice(1);
-while (data.length < totalPoints) {
-var x = new Date($.now());
-var y = $extruderTemp;
-data.push(y);
-}
-var res = [];
-for (var i = 0; i < data.length; ++i) {
-res.push([i, data[i]]);
-}
-return res;
-}
-
-function getData2() {
-data2 = data2.slice(1);
-while (data2.length < totalPoints) {
-var x = new Date($.now());
-var y = $bedTemp;
-data2.push(y);
-}
-var res2 = [];
-for (var i = 0; i < data2.length; ++i) {
-res2.push([i, data2[i]]);
-}
-return res2;
-}
-
-// Set up the control widget
-var updateInterval = 500;
-var plot = $.plot("#tempChart", [ getData() ], {
-series: {
-shadowSize: 0     // Drawing is faster without shadows
-},
-colors:['#ff0000'],
-yaxis: {
-min: 0,
-max: 300,
-zoomRange: [0.5, 310],
-panRange: [0, 300]
-},
-xaxis: {
-show: false,
-zoomRange: [0.5, 310],
-panRange: [0, 300]
-},
-zoom: {
-interactive: true
-},
-pan: {
-interactive: true
-}
-});
-
-var plot2 = $.plot("#tempChart2", [ getData2() ], {
-series: {
-shadowSize: 0     // Drawing is faster without shadows
-},
-colors:['#0037ff'],
-yaxis: {
-min: 0,
-max: 120,
-zoomRange: [0.5, 310],
-panRange: [0, 300]
-},
-xaxis: {
-show: false,
-zoomRange: [0.5, 310],
-panRange: [0, 300]
-},
-zoom: {
-interactive: true
-},
-pan: {
-interactive: true
-}
-
-});
-
-var tempChart = $("#tempChart");
-var tempChart2 = $("#tempChart2");
-
-// add zoom out button
-$("<div class=\"btn btn-default\" style=\"display: block; width: 40px; float: right; position: relative; top: 10px; right: 10px;\"><i class=\"fa fa-search-minus\"></i></div>").appendTo(tempChart).click(function (event) {
-event.preventDefault();
-plot.zoomOut();
-});
-$("<div class=\"btn btn-default\" style=\"display: block; width: 40px; float: right; position: relative; top: 10px; right: 10px;\"><i class=\"fa fa-search-minus\"></i></div>").appendTo(tempChart2).click(function (event) {
-event.preventDefault();
-plot2.zoomOut();
-});
-
-function update() {
-plot.setData([getData()]);
-plot2.setData([getData2()]);
-// Since the axes don't change, we don't need to call plot.setupGrid()
-plot.draw();
-plot2.draw();
-setTimeout(update, updateInterval);
-}
-
-update();
-});
-
-});
-
-$(function(){
-$("#fanSlider").slider({
-value:0,
-min:0,
-max:255,
-step:25.5,
-slide: function( event, ui ){
-var fanPercent = ui.value;
-setFan(ui.value);
-var fanMax = 255;
-fanPercent = (fanPercent/fanMax)*100;
-if (fanPercent == '0'){
-fanPercent = "Off";
-}else{
-fanPercent = fanPercent+"%";
-}
-$("#fanAmount").html(fanPercent);
-}
-});
 });*/

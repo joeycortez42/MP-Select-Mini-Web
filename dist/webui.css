@@ -121,30 +121,30 @@ footer {
 
 #gCodeInput { margin-bottom: 20px; }
 
+.temperature h3 {
+    margin-top: 56px;
+    margin-bottom: 50px;
+}
+
 .temperature .target {
     width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 50px;
+}
+
+.slider {
+    display: block;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 20px;
 }
 
+.slider.slider-vertical { height: 186px; }
+
+#fanspeed .slider-selection { background: #0272b6; }
+
 /*
-
-#eStop {
-display: block;
-margin: 30px auto;
--webkit-filter: grayscale(70%);
-/* Chrome, Safari, Opera *
-filter: grayscale(70%);
-}
-
-#eStop:hover {
-cursor: pointer;
--webkit-filter: grayscale(0%);
-/* Chrome, Safari, Opera *
-filter: grayscale(0%);
-}
-
 
 #controls {
 /*
@@ -188,12 +188,4 @@ border-bottom: 2px solid #b3b3b3;
 
 .unkPos {
 color: #ff0000;
-}
-
-span.ui-slider-handle.ui-corner-all.ui-state-default {
-background: #337ab7;
-}
-
-#fanSlider {
-background: #e6f9ff;
 }
