@@ -92,7 +92,7 @@ $(document).ready( function() {
 
   $("#clrfan").click( function() {
     sendCmd( 'M106 S0', 'Turn off Fan' );
-    $.ajax({ url: 'set?cmd=M106 S0', cache: false }).done( function(data) { feedback( data ); } );
+    $.ajax({ url: 'set?code=M106 S0', cache: false }).done( function(data) { feedback( data ); } );
   } );
 
   $("form").submit( function() {
