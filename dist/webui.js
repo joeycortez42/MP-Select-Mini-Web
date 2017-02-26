@@ -55,7 +55,7 @@ $(document).ready( function() {
     rate = $(".movement .rate button.active").attr( "data-rate" );
     axis = $(this).attr( "data-axis" );
     comment = 'Move ' + axis;
-    if ( movement == 'down' || movement == 'left' ) { rate = rate * -1; }
+    if ( movement == 'up' || movement == 'left' ) { rate = rate * -1; }
     if ( axis == 'E' && movement == 'plus' ) { comment = 'Extrude '; }
     if ( axis == 'E' && movement == 'minus' ) { comment = 'Retract '; }
 
