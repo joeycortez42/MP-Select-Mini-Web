@@ -1,7 +1,7 @@
 /*
 Name: MP Select Mini Web Javascript
 URL: https://github.com/nokemono42/MP-Select-Mini-Web
-Version: Alpha 0.53;
+Version: Alpha 0.54;
 */
 
 $(document).ready( function() {
@@ -39,6 +39,7 @@ $(document).ready( function() {
     gCode2Send = $('#gcode').val();
     if ( gCode2Send == '' ) { return; }
 
+    sendCmd( gCode2Send, '' );
     $.ajax({ url: "set?code=" + gCode2Send, cache: false }).done( function(data) { feedback( data ); } );
     $('#gcode').val( '' );
   } );
@@ -90,8 +91,8 @@ $(document).ready( function() {
   } );
 
   $("#clrfan").click( function() {
-    sendCmd( 'M106 S000', 'Turn off Fan' );
-    $.ajax({ url: 'set?cmd=M106 S000', cache: false }).done( function(data) { feedback( data ); } );
+    sendCmd( 'M106 S0', 'Turn off Fan' );
+    $.ajax({ url: 'set?cmd=M106 S0', cache: false }).done( function(data) { feedback( data ); } );
   } );
 
   $("form").submit( function() {
@@ -158,7 +159,7 @@ function delaySendSpeed( value ) {
   timers = setTimeout( function() {
     actualSpeed = Math.floor( 255 * (value/100) );
     sendCmd( 'M106 S' + actualSpeed, 'Set Fan speed to ' + value + '%' );
-    $.ajax({ url: "set?code=M106 S" + value[0], cache: false }).done( function(data) { feedback( data ); } );
+    $.ajax({ url: "set?code=M106 S" + value, cache: false }).done( function(data) { feedback( data ); } );
   }, 300 );
 }
 
