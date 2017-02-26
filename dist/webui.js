@@ -16,9 +16,9 @@ $(document).ready( function() {
       //scrollConsole();
 
       $("#rde").text( data.match( /\d+/g )[0] );
-      $("#wre").val( data.match( /\d+/g )[1] );
       $("#rdp").text( data.match( /\d+/g )[2] );
-      $("#wrp").val( data.match( /\d+/g )[3] );
+
+      delaySyncTemperatures( data.match( /\d+/g )[1], data.match( /\d+/g )[3] );
 
       var c = data.charAt( data.length - 1 );
 
@@ -37,7 +37,8 @@ $(document).ready( function() {
 
   $('#gCodeSend').click( function() {
     gCode2Send = $('#gcode').val();
-    if ( gCode2Send == '' ) return;
+    if ( gCode2Send == '' ) { return; }
+
     $.ajax({ url: "set?code=" + gCode2Send, cache: false }).done( function(data) { feedback( data ); } );
     $('#gcode').val( '' );
   } );
@@ -89,8 +90,8 @@ $(document).ready( function() {
   } );
 
   $("#clrfan").click( function() {
-    sendCmd( 'M106 S0', 'Turn off Fan' );
-    $.ajax({ url: 'set?cmd=M106 S0', cache: false }).done( function(data) { feedback( data ); } );
+    sendCmd( 'M106 S000', 'Turn off Fan' );
+    $.ajax({ url: 'set?cmd=M106 S000', cache: false }).done( function(data) { feedback( data ); } );
   } );
 
   $("form").submit( function() {
@@ -156,9 +157,17 @@ function delaySendSpeed( value ) {
   clearTimeout( timers );
   timers = setTimeout( function() {
     actualSpeed = Math.floor( 255 * (value/100) );
-    sendCmd( 'M106 S0' + actualSpeed, 'Set Fan speed to ' + value + '%' );
-    //$.ajax({ url: "set?code=M106 S" + value[0], cache: false }).done( function(data) { feedback( data ); } );
+    sendCmd( 'M106 S' + actualSpeed, 'Set Fan speed to ' + value + '%' );
+    $.ajax({ url: "set?code=M106 S" + value[0], cache: false }).done( function(data) { feedback( data ); } );
   }, 300 );
+}
+
+function delaySyncTemperatures( extruder, platform ) {
+  clearTimeout( timers );
+  timers = setTimeout( function() {
+    $("#wre").val( extruder );
+    $("#wrp").val( platform );
+  }, 3000 );
 }
 
 /*
