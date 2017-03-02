@@ -1,7 +1,7 @@
 /*
 Name: MP Select Mini Web Javascript
 URL: https://github.com/nokemono42/MP-Select-Mini-Web
-Version: Alpha 0.6;
+Version: Alpha 0.64;
 */
 
 $(document).ready( function() {
@@ -51,17 +51,21 @@ $(document).ready( function() {
   } );
 
   $(".movement .direction button").click( function() {
+    command = 'G1 ';
     movement = $(this).attr( "data-movement" );
     rate = $(".movement .rate button.active").attr( "data-rate" );
     axis = $(this).attr( "data-axis" );
     comment = 'Move ' + axis;
     if ( movement == 'up' || movement == 'left' ) { rate = rate * -1; }
     if ( axis == 'E' && movement == 'plus' ) { comment = 'Extrude '; }
-    if ( axis == 'E' && movement == 'minus' ) { comment = 'Retract '; }
+    if ( axis == 'E' && movement == 'minus' ) {
+      command = 'G10 '; axis = ''; rate = '';
+      comment = 'Retract ';
+    }
 
-    sendCmd( 'G1 ' + axis + rate, comment + ' ' + rate + 'mm' );
+    sendCmd( command + axis + rate, comment + ' ' + rate + 'mm' );
     $.ajax({ url: "set?code=G91", cache: false }).done( function(data) {} );
-    $.ajax({ url: "set?code=G1 " + axis + rate, cache: false }).done( function(data) { feedback( data ); } );
+    $.ajax({ url: "set?code=" + command + axis + rate, cache: false }).done( function(data) { feedback( data ); } );
   } );
 
   $(".movement .rate button").click( function() {

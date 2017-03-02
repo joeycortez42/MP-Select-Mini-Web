@@ -42,6 +42,7 @@ Mario Anthony Galliano (Facebook posting with upgrade/downgrade instructions.)
 
 ## To Dos
 
+* Disable motors button
 * Show time lasped / time remaining
 * Show filename that is printing
 * Change multiplier

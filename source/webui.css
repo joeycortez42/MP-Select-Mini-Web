@@ -1,7 +1,7 @@
 /*
 Name: MP Select Mini Web CSS
 URL: https://github.com/nokemono42/MP-Select-Mini-Web
-Version: Alpha 0.6;
+Version: Alpha 0.64;
 */
 
 html { font-size: 16px; }
@@ -53,7 +53,10 @@ footer {
 .progress .progress-bar { padding-top: 3px; }
 
 .webcam { margin-bottom: 20px; }
-.webcam img { width: 100%; }
+.webcam img {
+    width: auto;
+    height: 255px;
+ }
 
 .print-actions button {
     margin-bottom: 20px;
@@ -61,7 +64,7 @@ footer {
 }
 
 .dropzone {
-    min-height: 226px;
+    min-height: 201px;
     padding: 10px;
     margin-bottom: 20px;
     background-color: #fff;
@@ -106,7 +109,8 @@ footer {
 .dropzone .dz-preview .dz-success-mark svg g path { fill: #2C9040; }
 .dropzone .dz-preview .dz-error-mark svg g { fill: #FF2F3C; }
 
-.movement .row { margin-bottom: 20px; }
+.movement .row { margin-bottom: 12px; }
+.movement .row.rate { margin-bottom: 20px; }
 
 .movement .direction {
     margin-left: 0;
@@ -116,8 +120,8 @@ footer {
 .rate .center-block { width: 196px; }
 
 #console {
-    min-height: 226px;
-    max-height: 226px;
+    min-height: 201px;
+    max-height: 201px;
     overflow: scroll;
     padding: 0 8px;
     font-family: monospace, monospace;
@@ -131,8 +135,8 @@ footer {
 #gCodeInput { margin-bottom: 20px; }
 
 .temperature h3 {
-    margin-top: 56px;
-    margin-bottom: 50px;
+    margin-top: 41px;
+    margin-bottom: 40px;
 }
 
 .temperature .target {
@@ -149,6 +153,6 @@ footer {
     margin-bottom: 20px;
 }
 
-.slider.slider-vertical { height: 186px; }
+.slider.slider-vertical { height: 161px; }
 
 #fanspeed .slider-selection { background: #0272b6; }
