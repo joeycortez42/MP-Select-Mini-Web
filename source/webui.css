@@ -1,7 +1,6 @@
 /*
 Name: MP Select Mini Web CSS
 URL: https://github.com/nokemono42/MP-Select-Mini-Web
-Version: Alpha 0.64;
 */
 
 html { font-size: 16px; }
@@ -36,8 +35,8 @@ h4 { margin-top: 0; }
 }
 
 footer {
-    padding-top: 50px;
-    padding-bottom: 20px;
+    padding-top: 15px;
+    padding-bottom: 10px;
     font-size: 0.875rem;
     text-align: right;
 }
@@ -109,7 +108,7 @@ footer {
 .dropzone .dz-preview .dz-success-mark svg g path { fill: #2C9040; }
 .dropzone .dz-preview .dz-error-mark svg g { fill: #FF2F3C; }
 
-.movement .row { margin-bottom: 12px; }
+.movement .row { margin-bottom: 14px; }
 .movement .row.rate { margin-bottom: 20px; }
 
 .movement .direction {
@@ -143,7 +142,7 @@ footer {
     width: 100px;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
 .slider {
@@ -153,6 +152,6 @@ footer {
     margin-bottom: 20px;
 }
 
-.slider.slider-vertical { height: 161px; }
+.slider.slider-vertical { height: 141px; }
 
 #fanspeed .slider-selection { background: #0272b6; }
