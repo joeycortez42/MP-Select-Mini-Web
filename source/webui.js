@@ -43,7 +43,7 @@ $(document).ready( function() {
     axis = $(this).attr( "data-axis" );
 
     if (axis == 'all') {
-      code = 'G28';
+      code = 'G28 X0 Y0 Z0';
       comment = 'all axes';
     } else {
       code = 'G28 ' + axis;
