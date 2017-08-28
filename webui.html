@@ -1,242 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>MP Select Mini</title>
+        <link rel="profile" href="http://gmpg.org/xfn/11" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/css/bootstrap-slider.min.css" />
+        <!-- -->
+        <link rel="stylesheet" href="https://rawgit.com/nokemono42/MP-Select-Mini-Web/web-ui-update/source/webui.min.css"/>
+        <!-- --
+        <link rel="stylesheet" href="source/webui.css"/>
+        <!-- -->
+    </head>
+    <body>
+<div id="page" class="container-fluid">
+    <h3 class="text-center" title="Printer Status">Printer Status: <span id="stat" title="Not Available">N/A</span></h3>
 
-<html>
-  <head>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.navigate.min.js"></script>
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.css" />
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css" />
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" />
-<link rel="stylesheet" href="http://malyansys.com/js/webui160910.css"/>
-	</head>
-  <body>
-    <div id="dropzone" style="display:none;">
-      <form action="/upload" class="dropzone" id="mydz" />
+    <div class="progress" title="Printing Progress">
+        <div class="progress-bar active" id="pgs" role="progressbar"></div>
     </div>
-<div id="mainPage" class="container-fluid">
+
     <div class="row">
-        <div class="col-xs-12">
-            <div class="hero-unit topBar">
-
-                <div class="col-xs-12 col-md-4"></div>
-                <div class="col-xs-12 col-md-4">
-                    <h1 style="text-align: center;">Malyan Desktop 3D Printer</h1>
-
-                    <div style="text-align: center; max-width: 400px; margin:30px auto;">
-                      <strong>Print Status: <span id="stat">N/A</span></strong>
-                      <div class="progress"  style="margin-bottom: 10px; height: 30px;border: 1px solid #b3b3b3;">
-                          <div class="progress-bar progress-bar-striped active" role="progressbar" id="pgs" style="padding-top: 4px;"></div>
-                      </div>
-
-                      <div class="row">
-                        <div class="col-md-6">
-                            <button class="btn btn-success btn-block" type="button" onclick="start_p()"><i class="fa fa-check"></i> Start Print</button>
-                        </div>
-                        <div class="col-md-6">
-                            <button class="btn btn-danger btn-block" type="button" onclick="cancel_p()"><i class="fa fa-ban"></i> Cancel Print</button>
-                        </div>
-                      </div>
-                      <div class="clearfix"></div>
-                      <div id="newDropzone" style="margin-top: 10px;"></div>
-
-                    </div>
-
-
+        <div class="col-xs-12 col-md-4 webcam text-center">
+            <img class="img-rounded" title="MP Select Mini" src="https://images.monoprice.com/productlargeimages/153651.jpg">
+        </div>
+        <div class="col-xs-12 col-md-4 print-actions">
+            <div class="row">
+                <div class="col-xs-6">
+                    <button class="btn btn-success" type="button" onclick="start_p()" title="Start Print">Start Print</button>
                 </div>
-                <div class="col-xs-12 col-md-4" style="text-align: center;"><img src="http://mpselectmini.com/mpselect/webui/estop.png" id="eStop" class=""></div>
-                <div class="clearfix"></div>
+                <div class="col-xs-6">
+                    <button class="btn btn-danger" type="button" onclick="cancel_p()" title="Cancel Print">Cancel Print</button>
+                </div>
             </div>
 
-            <div class="row" id="controls" disabled>
-                <div class="col-md-6">
-                    <div id="gCodeLog" class=""></div>
-                    <div id="rawgCode" class="input-group">
-                        <input class="form-control" type="text" name="gcode" id="gcode" placeholder="Send gCode to printer..."><span class="input-group-btn"><button id="sendRAWgCode" class="btn btn-warning"><i class="fa fa-send" aria-hidden="true"></i> Send</button></span>
-                    </div>
+            <div class="clearfix"></div>
+            <div id="dropzone" title="Upload G-code Here">
+                <form action="/upload" class="dropzone" id="mydz" />
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-4">
+        </div>
+    </div>
 
-                    <div class="col-xs-12 controlBox">
-                                                                               <div class="col-xs-12" id="movement">Movement</div>
-                        <div class="col-xs-8">
-
-                            <div class="col-xs-4 jogitem">
-                                <button class="btn btn-danger homeIt" data-axis="X" data-id="X0"><i class="fa fa-home"></i> X</button>
-                                <br>
-                                <input id="posX" type="text" disabled value="0" placeholder="?" class="unkPos" style="width: 48px;">
-                            </div>
-                            <div class="col-xs-4 jogitem" style="left: 2px;">
-                                <button class="btn btn-info jogdial moveIt" data-speed="F2400" data-axis="Y" data-id="50"><i class="fa fa-chevron-up"></i>
-                                    <br>50</button>
-                                <br>
-                                <button class="btn btn-info jogdial moveIt" data-speed="F2400" data-axis="Y" data-id="10"><i class="fa fa-chevron-up"></i>
-                                    <br>10</button>
-                                <br>
-                                <button class="btn btn-info jogdial moveIt" data-speed="F2400" data-axis="Y" data-id="01"><i class="fa fa-chevron-up"></i>
-                                    <br>1</button>
-                                <br>
-                                <button class="btn btn-info jogdial moveIt" data-speed="F2400" data-axis="Y" data-id="0.1"><i class="fa fa-chevron-up"></i>
-                                    <br>0.1</button>
-                                <br>
-                            </div>
-                            <div class="col-xs-4 jogitem">
-                                <button class="btn btn-success homeIt" data-axis="Y" data-id="Y0"><i class="fa fa-home"></i> Y</button>
-                                <br>
-                                <input id="posY" type="text" disabled value="0" placeholder="?" class="unkPos" style="width: 48px;">
-                            </div>
-                            <div class="clearfix"></div>
-
-                            <div class="col-xs-12 jogitem">
-                                <button class="btn btn-info jogdial moveIt" data-speed="F2400" data-axis="X" data-id="-50"><i class="fa fa-chevron-left"></i> 50</button>
-                                <button class="btn btn-info jogdial moveIt" data-speed="F2400" data-axis="X" data-id="-10"><i class="fa fa-chevron-left"></i> 10</button>
-                                <button class="btn btn-info jogdial moveIt" data-speed="F2400" data-axis="X" data-id="-01"><i class="fa fa-chevron-left"></i> 1</button>
-                                <button class="btn btn-info jogdial moveIt" data-speed="F2400" data-axis="X" data-id="-0.1"><i class="fa fa-chevron-left"></i> 0.1</button>
-                                <button class="btn btn-info jogdial homeIt" data-axis="XY" data-id="X0 Y0" style="font-size: 20px;"><i class="fa fa-home"></i></button>
-                                <button class="btn btn-info jogdial moveIt" data-speed="F2400" data-axis="X" data-id="0.1"><i class="fa fa-chevron-right"></i> 0.1</button>
-                                <button class="btn btn-info jogdial moveIt" data-speed="F2400" data-axis="X" data-id="01"><i class="fa fa-chevron-right"></i> 1</button>
-                                <button class="btn btn-info jogdial moveIt" data-speed="F2400" data-axis="X" data-id="10"><i class="fa fa-chevron-right"></i> 10</button>
-                                <button class="btn btn-info jogdial moveIt" data-speed="F2400" data-axis="X" data-id="50"><i class="fa fa-chevron-right"></i> 50</button>
-                            </div>
-                            <div class="clearfix"></div>
-
-                            <div class="col-xs-4 jogitem" style="min-height: 108px;">
-                                <button class="btn btn-info homeIt" data-axis="XYZ" data-id="X0 Y0 Z0" style="position: absolute; bottom: 0; left: 40px;"><i class="fa fa-home"></i> All</button>
-                            </div>
-                            <div class="col-xs-4 jogitem" style="left: 2px;">
-                                <button class="btn btn-info jogdial moveIt" data-speed="F2400" data-axis="Y" data-id="-0.1"><i class="fa fa-chevron-down"></i>
-                                    <br>0.1</button>
-                                <br>
-                                <button class="btn btn-info jogdial moveIt" data-speed="F2400" data-axis="Y" data-id="-01"><i class="fa fa-chevron-down"></i>
-                                    <br>1</button>
-                                <br>
-                                <button class="btn btn-info jogdial moveIt" data-speed="F2400" data-axis="Y" data-id="-10"><i class="fa fa-chevron-down"></i>
-                                    <br>10</button>
-                                <br>
-                                <button class="btn btn-info jogdial moveIt" data-speed="F2400" data-axis="Y" data-id="-50"><i class="fa fa-chevron-down"></i>
-                                    <br>50</button>
-                                <br>
-                            </div>
-                            <div class="col-xs-4 jogitem" style="min-height: 108px;">
-                                <button class="btn btn-primary homeIt" data-axis="Z" data-id="Z0" style="position: absolute; bottom: 0; right: 40px;"><i class="fa fa-home"></i> Z</button>
-                                <input id="posZ" type="text" disabled value="0" placeholder="?" class="unkPos" style="width: 48px; position: absolute; bottom: 42px; right: 40px;">
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-
-                        <div class="col-xs-2 jogitem">
-                            <button class="btn btn-primary jogdial moveIt" data-speed="F2400" data-axis="Z" data-id="50"><i class="fa fa-chevron-up"></i>
-                                <br>50</button>
-                            <br>
-                            <button class="btn btn-primary jogdial moveIt" data-speed="F2400" data-axis="Z" data-id="10"><i class="fa fa-chevron-up"></i>
-                                <br>10</button>
-                            <br>
-                            <button class="btn btn-primary jogdial moveIt" data-speed="F2400" data-axis="Z" data-id="01"><i class="fa fa-chevron-up"></i>
-                                <br>1</button>
-                            <br>
-                            <button class="btn btn-primary jogdial moveIt" data-speed="F2400" data-axis="Z" data-id="0.1"><i class="fa fa-chevron-up"></i>
-                                <br>0.1</button>
-                            <br>
-                            <button class="btn btn-primary jogdial homeIt" data-axis="Z" data-id="Z0" style="font-size: 20px;"><i class="fa fa-home"></i></button>
-                            <br>
-                            <button class="btn btn-primary jogdial moveIt" data-speed="F2400" data-axis="Z" data-id="-0.1"><i class="fa fa-chevron-down"></i>
-                                <br>0.1</button>
-                            <br>
-                            <button class="btn btn-primary jogdial moveIt" data-speed="F2400" data-axis="Z" data-id="-01"><i class="fa fa-chevron-down"></i>
-                                <br>1</button>
-                            <br>
-                            <button class="btn btn-primary jogdial moveIt" data-speed="F2400" data-axis="Z" data-id="-10"><i class="fa fa-chevron-down"></i>
-                                <br>10</button>
-                            <br>
-                            <button class="btn btn-primary jogdial moveIt" data-speed="F2400" data-axis="Z" data-id="-50"><i class="fa fa-chevron-down"></i>
-                                <br>50</button>
-                            <br>
-                        </div>
-
-                        <div class="col-xs-2 jogitem">
-                            <button class="btn btn-warning jogdial moveIt" data-axis="E" data-speed="F250" data-id="-100"><i class="fa fa-chevron-up"></i>
-                                <br>-100</button>
-                            <br>
-                            <button class="btn btn-warning jogdial moveIt" data-axis="E" data-speed="F250" data-id="-50"><i class="fa fa-chevron-up"></i>
-                                <br>-50</button>
-                            <br>
-                            <button class="btn btn-warning jogdial moveIt" data-axis="E" data-speed="F250" data-id="-10"><i class="fa fa-chevron-up"></i>
-                                <br>-10</button>
-                            <br>
-                            <button class="btn btn-warning jogdial moveIt" data-axis="E" data-speed="F250" data-id="-01"><i class="fa fa-chevron-up"></i>
-                                <br>-1</button>
-                            <br>
-                            <button class="btn btn-warning jogdial" style="font-size: 20px;"><i class="fa fa-times"></i></button>
-                            <br>
-                            <button class="btn btn-warning jogdial moveIt" data-axis="E" data-speed="F100" data-id="01"><i class="fa fa-chevron-down"></i>
-                                <br>1</button>
-                            <br>
-                            <button class="btn btn-warning jogdial moveIt" data-axis="E" data-speed="F100" data-id="10"><i class="fa fa-chevron-down"></i>
-                                <br>10</button>
-                            <br>
-                            <button class="btn btn-warning jogdial moveIt" data-axis="E" data-speed="F100" data-id="50"><i class="fa fa-chevron-down"></i>
-                                <br>50</button>
-                            <br>
-                            <button class="btn btn-warning jogdial moveIt" data-axis="E" data-speed="F100" data-id="100"><i class="fa fa-chevron-down"></i>
-                                <br>100</button>
-                            <br>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-
+    <div class="row">
+        <div class="col-xs-12 col-md-4 movement">
+            <h4 class="text-center">Movement</h4>
+            <div class="row">
+                <div class="col-xs-3">
+                    <button type="button" class="btn btn-default btn-block home" title="Home X Axis" data-axis="X">
+                        <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
+                            <path id="icons-home" stroke="none" fill="rgb(101, 108, 126)" d="M 0,7.5 L 7,-0 14,7.5 12.13,7.5 12.13,15 8.4,15 8.4,10 5.6,10 5.6,15 1.87,15 1.87,7.5 0,7.5 0,7.5 Z M 0,7.5" />
+                        </svg> X
+                    </button>
                 </div>
-                <div class="col-md-6">
-
-                    <div class="col-xs-12" style="text-align: center; margin-bottom: 10px;">
-                      <div class="col-xs-4"><strong>Fan Speed: <span id="fanAmount"style="border: 3px solid #b3b3b3; padding: 6px; border-radius: 2px; margin-right: 10px;">Off</span></strong></div>
-                      <div class="col-xs-8"><div id="fanSlider"></div></div>
-                    </div>
-                    <div class="clearfix"></div>
-
-                    <div class="col-xs-12" style="text-align: center; margin-bottom: 10px;">
-                      <strong>Extruder</strong> 
-                      Temp: <strong><span id="rde" style="border: 3px solid #b3b3b3; padding: 6px; border-radius: 2px; margin-right: 10px;">N/A</span></strong>
-                      Target: <strong><span id="rdeTarget" style="border: 3px solid #b3b3b3; padding: 6px; border-radius: 2px; margin-right: 10px;">N/A</span></strong>
-                    </div>
-                    <div class="clearfix"></div>
-                    <div id="tempChart" style="height: 150px;"></div>
-                    <div class="clearfix"></div>
-                    <div class="col-xs-12" style="text-align: center;">
-                      <span class="">
-                        <input class="form-control" type="text" id="wre" placeholder="Set Extruder Temp" style="max-width: 200px; display: inline-block;"/>
-                        <button class="btn btn-success" id="sete" style="height: 34px;"><i class="fa fa-check"></i></button>
-                        <button class="btn btn-danger" id="clre" style="height: 34px;"><i class="fa fa-ban"></i></button>
-                      </span>
-                    </div>
-                    <div class="clearfix"></div>
-
-<hr>
-
-                    <div class="col-xs-12" style="text-align: center; margin-bottom: 10px;">
-                      <strong>Build Platform</strong> 
-                      Temp: <strong><span id="rdp" style="border: 3px solid #b3b3b3; padding: 6px; border-radius: 2px; margin-right: 10px;">N/A</span></strong>
-                      Target: <strong><span id="rdpTarget" style="border: 3px solid #b3b3b3; padding: 6px; border-radius: 2px; margin-right: 10px;">N/A</span></strong>
-                    </div>
-                    <div class="clearfix"></div>
-                    <div id="tempChart2" style="height: 150px;"></div>
-                    <div class="clearfix"></div>
-                    <div class="col-xs-12" style="text-align: center;">
-                      <span class="">
-                        <input class="form-control" type="text" id="wrp" placeholder="Set Platform Temp" style="max-width: 200px; display: inline-block;"/>
-                        <button class="btn btn-success" id="setp" style="height: 34px;"><i class="fa fa-check"></i></button>
-                        <button class="btn btn-danger" id="clrp" style="height: 34px;"><i class="fa fa-ban"></i></button>
-                      </span>
-                    </div>
-                    <div class="clearfix"></div>
-
-
+                <div class="col-xs-3">
+                    <button type="button" class="btn btn-default btn-block home" title="Home Y Axis" data-axis="Y">
+                        <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
+                            <path id="icons-home" stroke="none" fill="rgb(101, 108, 126)" d="M 0,7.5 L 7,-0 14,7.5 12.13,7.5 12.13,15 8.4,15 8.4,10 5.6,10 5.6,15 1.87,15 1.87,7.5 0,7.5 0,7.5 Z M 0,7.5" />
+                        </svg> Y
+                     </button>
                 </div>
-                <div class="col-md-4"></div>
+                <div class="col-xs-3">
+                    <button type="button" class="btn btn-default btn-block home" title="Home Z Axis" data-axis="Z">
+                        <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
+                            <path id="icons-home" stroke="none" fill="rgb(101, 108, 126)" d="M 0,7.5 L 7,-0 14,7.5 12.13,7.5 12.13,15 8.4,15 8.4,10 5.6,10 5.6,15 1.87,15 1.87,7.5 0,7.5 0,7.5 Z M 0,7.5" />
+                        </svg> Z
+                    </button>
+                </div>
+                <div class="col-xs-3">
+                    <button type="button" class="btn btn-default btn-block home" title="Home All Axes" data-axis="all">
+                        <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
+                            <path id="icons-home" stroke="none" fill="rgb(101, 108, 126)" d="M 0,7.5 L 7,-0 14,7.5 12.13,7.5 12.13,15 8.4,15 8.4,10 5.6,10 5.6,15 1.87,15 1.87,7.5 0,7.5 0,7.5 Z M 0,7.5" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="row direction">
+                <div class="col-xs-2 col-xs-offset-2">
+                    <button type="button" class="btn btn-default" data-movement="up" title="Move Bed Backward" data-axis="Y">
+                        <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
+                            <path id="icons-upArrow" stroke="none" fill="rgb(101, 108, 126)" d="M 6.5,0 L 1,7 4.5,7 4.5,14 8.5,14 8.5,7 12,7 6.5,0 Z M 6.5,0" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="col-xs-2 col-xs-offset-3 text-center">
+                    <button type="button" class="btn btn-default" data-movement="down" title="Raise Z Axis" data-axis="Z">
+                         <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
+                            <path id="icons-upArrow" stroke="none" fill="rgb(101, 108, 126)" d="M 6.5,0 L 1,7 4.5,7 4.5,14 8.5,14 8.5,7 12,7 6.5,0 Z M 6.5,0" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="col-xs-3 text-center">
+                    <button type="button" class="btn btn-default" data-movement="minus" title="Retract Filament" data-axis="E">
+                        <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
+                            <rect id="icons-minus" stroke="none" fill="rgb(101, 108, 126)" x="1" y="6" width="12" height="3.5" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="row direction">
+                <div class="col-xs-2">
+                    <button type="button" class="btn btn-default" data-movement="left" title="Move Extruder Left" data-axis="X">
+                        <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
+                            <path id="icons-leftArrow" stroke="none" fill="rgb(101, 108, 126)" d="M 14,5.5 C 13.97,5.5 7.05,5.5 7,5.5 6.95,5.5 7,2 7,2 L 0,7.5 7,13 7,9.5 14,9.5 C 14,9.5 14.03,5.5 14,5.5 Z M 14,5.5" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="col-xs-2">
+                    <button type="button" class="btn btn-default" data-movement="disable" title="Disable Motor Lock">
+                        <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
+                            <path id="icons-text" stroke="none" fill="rgb(101, 108, 126)" d="M 0.54,1 L 3.79,1 C 3.94,1 4.03,1.04 4.06,1.11 4.09,1.19 4.06,1.28 3.95,1.38 L 2.94,2.4 5.09,4.55 C 5.14,4.61 5.17,4.68 5.17,4.75 5.17,4.82 5.14,4.89 5.09,4.94 L 3.94,6.09 C 3.89,6.14 3.82,6.17 3.75,6.17 3.68,6.17 3.61,6.14 3.55,6.09 L 1.4,3.94 0.38,4.95 C 0.28,5.06 0.19,5.09 0.11,5.06 0.04,5.03 0,4.94 0,4.79 L 0,1.54 C 0,1.39 0.05,1.26 0.16,1.16 0.26,1.05 0.39,1 0.54,1 Z M 9.21,1 L 12.46,1 C 12.61,1 12.74,1.05 12.84,1.16 12.95,1.26 13,1.39 13,1.54 L 13,4.79 C 13,4.94 12.96,5.03 12.89,5.06 12.81,5.09 12.72,5.06 12.62,4.95 L 11.6,3.94 9.45,6.09 C 9.39,6.14 9.32,6.17 9.25,6.17 9.18,6.17 9.11,6.14 9.06,6.09 L 7.91,4.94 C 7.86,4.89 7.83,4.82 7.83,4.75 7.83,4.68 7.86,4.61 7.91,4.55 L 10.06,2.4 9.05,1.38 C 8.94,1.28 8.91,1.19 8.94,1.11 8.97,1.04 9.06,1 9.21,1 Z M 3.94,8.91 L 5.09,10.06 C 5.14,10.11 5.17,10.18 5.17,10.25 5.17,10.32 5.14,10.39 5.09,10.45 L 2.94,12.6 3.95,13.62 C 4.06,13.72 4.09,13.81 4.06,13.89 4.03,13.96 3.94,14 3.79,14 L 0.54,14 C 0.39,14 0.26,13.95 0.16,13.84 0.05,13.74 0,13.61 0,13.46 L 0,10.21 C 0,10.06 0.04,9.97 0.11,9.94 0.19,9.91 0.28,9.94 0.38,10.05 L 1.4,11.06 3.55,8.91 C 3.61,8.86 3.68,8.83 3.75,8.83 3.82,8.83 3.89,8.86 3.94,8.91 Z M 11.6,11.06 L 12.62,10.05 C 12.72,9.94 12.81,9.91 12.89,9.94 12.96,9.97 13,10.06 13,10.21 L 13,13.46 C 13,13.61 12.95,13.74 12.84,13.84 12.74,13.95 12.61,14 12.46,14 L 9.21,14 C 9.06,14 8.97,13.96 8.94,13.89 8.91,13.81 8.94,13.72 9.05,13.62 L 10.06,12.6 7.91,10.45 C 7.86,10.39 7.83,10.32 7.83,10.25 7.83,10.18 7.86,10.11 7.91,10.06 L 9.06,8.91 C 9.11,8.86 9.18,8.83 9.25,8.83 9.32,8.83 9.39,8.86 9.45,8.91 L 11.6,11.06 Z M 11.6,11.06" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="col-xs-2">
+                    <button type="button" class="btn btn-default" data-movement="right" title="Move Extruder Right" data-axis="X">
+                        <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
+                            <path id="icons-rightArrow" stroke="none" fill="rgb(101, 108, 126)" d="M 0,5.5 C -0.03,5.5 7.05,5.5 7,5.5 6.95,5.5 7,2 7,2 L 14,7.5 7,13 7,9.5 0,9.5 C 0,9.5 0.03,5.5 0,5.5 Z M 0,5.5" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="col-xs-2 col-xs-offset-1 text-center">Z</div>
+                <div class="col-xs-3 text-center">Extrude</div>
+            </div>
+            <div class="row direction">
+                <div class="col-xs-2 col-xs-offset-2">
+                    <button type="button" class="btn btn-default" data-movement="down" title="Move Bed Forward" data-axis="Y">
+                        <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
+                            <path id="icons-downArrow" stroke="none" fill="rgb(101, 108, 126)" d="M 4.5,-0 L 8.5,-0 8.5,7 12,7 6.5,14 1,7 4.5,7 4.5,-0" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="col-xs-2 col-xs-offset-3 text-center">
+                    <button type="button" class="btn btn-default" data-movement="up" title="Lower Z Axis" data-axis="Z">
+                        <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
+                            <path id="icons-downArrow" stroke="none" fill="rgb(101, 108, 126)" d="M 4.5,-0 L 8.5,-0 8.5,7 12,7 6.5,14 1,7 4.5,7 4.5,-0" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="col-xs-3 text-center">
+                    <button type="button" class="btn btn-default" data-movement="plus" title="Extrude Filament" data-axis="E">
+                        <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
+                            <path id="icons-plus" stroke="none" fill="rgb(101, 108, 126)" d="M 1,5.75 L 5.25,5.75 5.25,1 8.75,1 8.75,5.75 13,5.75 13,9.25 8.75,9.25 8.75,14 5.25,14 5.25,9.25 1,9.25 1,5.75 Z M 1,5.75" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="row rate">
+                <div class="btn-group center-block" title="Movement Interval" role="group">
+                  <button type="button" class="btn btn-default" data-rate="0.1">0.1</button>
+                  <button type="button" class="btn btn-default" data-rate="1">1</button>
+                  <button type="button" class="btn btn-default active" data-rate="10">10</button>
+                  <button type="button" class="btn btn-default" data-rate="25">25</button>
+                  <button type="button" class="btn btn-default" data-rate="50">50</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-4">
+            <div class="well" id="console" title="Printer Console">
+                <div id="gCodeLog"></div>
+            </div>
+            <div id="gCodeInput" class="input-group">
+                <input type="text" class="form-control" name="gcode" id="gcode" placeholder="Send G-code to printer..." />
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" id="gCodeSend" title="Send G-code to Printer">Send</button>
+                </span>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-4 temperature">
+            <h4 class="text-center">Temperature</h4>
+            <div class="row">
+                <div class="col-xs-4 text-center">
+                    <h5>Extruder</h5>
+                    <h3 id="rde">N/A</h3>
+                    <div class="input-group target">
+                      <input type="text" class="form-control" id="wre" />
+                      <span class="input-group-addon" id="sete" title="Set Extruder Preheat">°C</span>
+                    </div>
+                    <button type="button" class="btn btn-default btn-sm" id="clre" title="Turn Off Extruder Preheat">OFF</button>
+                </div>
+                <div class="col-xs-4 text-center">
+                    <h5>Fan Speed</h5>
+                    <input id="fanspeed" type="text"/>
+                    <button type="button" class="btn btn-default btn-sm" id="clrfan" title="Turn Off Fan Preheat">OFF</button>
+                </div>
+                <div class="col-xs4 text-center">
+                    <h5>Platform</h5>
+                    <h3 id="rdp">N/A</h3>
+                    <div class="input-group target">
+                      <input type="text" class="form-control" id="wrp" />
+                      <span class="input-group-addon" id="setp" title="Set Bed Preheat">°C</span>
+                    </div>
+                    <button type="button" class="btn btn-default btn-sm" id="clrp" title="Turn Off Bed Preheat">OFF</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<script src="http://malyansys.com/js/webui160910.js"></script>
-
-  </body>
+    <footer class="container">
+        <span class="version">Alpha v0.7</span>
+    </footer>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/bootstrap-slider.min.js"></script>
+        <!-- -->
+        <script src="https://rawgit.com/nokemono42/MP-Select-Mini-Web/web-ui-update/source/webui.min.js"></script>
+        <!-- --
+        <script src="source/webui.js"></script>
+        <!-- -->
+    </body>
 </html>
