@@ -8,7 +8,7 @@ Built using Bootstrap so the UI is mobile-friendly and tablet-friendly.
 
 While you may want to update the UI of the printer, you don't want the web server on the controller working too hard. This upgrade is designed to minimize the amount of data the web server has to serve. You browser will be doing most of the heavy lifting.
 
-![Image of the WebUI](https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/web-ui-update/screenshot.png)
+![Image of the WebUI](https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/screenshot.png)
 
 ## Getting Started
 
