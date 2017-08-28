@@ -6,8 +6,6 @@ Upgrade the Malyan 200 or the Monoprice Select Mini's (V1) Web UI and enable fas
 
 Built using Bootstrap so the UI is mobile-friendly and tablet-friendly.
 
-While you may want to update the UI of the printer, you don't want the web server on the controller working too hard. This upgrade is designed to minimize the amount of data the web server has to serve. You browser will be doing most of the heavy lifting.
-
 ![Image of the WebUI](https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/master/screenshot.png)
 
 ## Getting Started
@@ -24,6 +22,12 @@ While you may want to update the UI of the printer, you don't want the web serve
 ## Enable Faster Wi-Fi File Uploads
 
 By default the upgraded Web UI will send `M563 S6` on each refresh to ensure faster Wi-Fi file uploads is enabled.
+
+## Offline Usage
+
+While you may want to update the UI of the printer, you don't want the web server on the controller working too hard. This upgrade is designed to minimize the amount of data the web server has to serve. You browser will be doing most of the heavy lifting.
+
+But if you want to use the Web UI without an active Internet connection, delete the `webui.html` file and rename `webui-offline.html` to `webui.html`.
 
 ## Troubleshooting
 
