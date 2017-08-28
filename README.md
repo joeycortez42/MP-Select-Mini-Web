@@ -2,33 +2,36 @@
 
 ## Overview
 
-Upgrade the Malyan 200 or the Monoprice Select Mini's Web UI and enable faster Wi-Fi file transfers. Built using Bootstrap so the UI is mobile-friendly and tablet-friendly.
+Upgrade the Malyan 200 or the Monoprice Select Mini's (V1) Web UI and enable faster Wi-Fi file uploads.
 
-While you want to update the UI of the printer, you don't want the web server on the controller working too hard. This upgrade is designed to minimize the amount of data the web server has to serve. You browser will be doing move of the heavy lifting.
+Built using Bootstrap so the UI is mobile-friendly and tablet-friendly.
+
+While you may want to update the UI of the printer, you don't want the web server on the controller working too hard. This upgrade is designed to minimize the amount of data the web server has to serve. You browser will be doing most of the heavy lifting.
+
+![Image of the WebUI](https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/web-ui-update/screenshot.png)
 
 ## Getting Started
 
 1. Download and unzip `MP-Select-Mini-Web` from GitHub.
 2. Point a web browser window to your printer's IP address. `http://IPAddressHere`
 3. Now browse to the upgrade page. `http://IPAddressHere/up`
-4. On the upgrade page, there are three options. We are only concerned with the last one, "Upload web." DO NOT CLICK THIS YET.
-5. On the same line as "Upload web" click "Choose file" and select the "webui.html" file from the folder you unzipped earlier.
-6. NOW you can click "Upload web."
-6. If things worked, the response will display one word only. If you see "OK" you are good to go!
+4. Click the third "Choose file" and select the "webui.html" file from the folder you unzipped earlier.
+5. Click "Upload web."
+6. If you see "OK" you are good to go!
 7. It's recommended you power cycle your printer at this point.
-8. Once your printer is back online, browse to `http://IPAddressHere`. You should now have the upgraded web UI with full manual control.
+8. Once your printer is back online, browse to `http://IPAddressHere`. You should now have the upgraded Web UI with full manual control.
 
-## Enable Faster Wifi File Transfers
+## Enable Faster Wi-Fi File Uploads
 
-The final step is to speed up your Wi-Fi uploading by pasting, `M563 S6` in the "send GCode to printer" box and hitting send. You will need to send that GCode after every power cycle, though.
+By default the upgraded Web UI will send `M563 S6` on each refresh to ensure faster Wi-Fi file uploads is enabled.
 
 ## Troubleshooting
 
 Did something break? Here's how you can undo the Web UI upgrade.
 
-1. Turn off the printer. Wait about 10 seconds, and then turn it back on.
-3. Once it's on go DIRECTLY to `http://IPAddressHere/up`.
-4. Just click the "Upload web" button without choosing a file and it will restore the factory web UI.
+1. Turn off the printer. Wait about 10 seconds and then turn it back on.
+3. Once it's on, go DIRECTLY to `http://IPAddressHere/up`.
+4. Just click the "Upload web" button without choosing a file and this will restore the factory web UI.
 
 ## Credits
 
@@ -36,13 +39,13 @@ Joey Cortez
 
 Jason Jones (Original Code)
 
-Matthew Upp (Middle Man / Beta Tester)
+Matthew Upp (Middle Man)
 
-Mario Anthony Galliano (Facebook posting with upgrade/downgrade instructions.)
+Mario Anthony Galliano (Facebook Group posting with upgrade/downgrade instructions.)
 
-## To Dos
+## Upcoming Improvements
 
-* Disable motors button
+* Test on MPSM V2
 * Show time lasped / time remaining
 * Show filename that is printing
 * Change multiplier

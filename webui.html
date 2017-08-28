@@ -18,33 +18,32 @@
     </head>
     <body>
 <div id="page" class="container-fluid">
-    <h3 class="text-center">Printer Status: <span id="stat">N/A</span></h3>
+    <h3 class="text-center" title="Printer Status">Printer Status: <span id="stat" title="Not Available">N/A</span></h3>
 
-    <div class="progress">
+    <div class="progress" title="Printing Progress">
         <div class="progress-bar active" id="pgs" role="progressbar"></div>
     </div>
 
     <div class="row">
         <div class="col-xs-12 col-md-4 webcam text-center">
-            <img class="img-rounded" src="https://images.monoprice.com/productlargeimages/153651.jpg">
+            <img class="img-rounded" title="MP Select Mini" src="https://images.monoprice.com/productlargeimages/153651.jpg">
         </div>
         <div class="col-xs-12 col-md-4 print-actions">
             <div class="row">
                 <div class="col-xs-6">
-                    <button class="btn btn-success" type="button" onclick="start_p()">Start Print</button>
+                    <button class="btn btn-success" type="button" onclick="start_p()" title="Start Print">Start Print</button>
                 </div>
                 <div class="col-xs-6">
-                    <button class="btn btn-danger" type="button" onclick="cancel_p()">Cancel Print</button>
+                    <button class="btn btn-danger" type="button" onclick="cancel_p()" title="Cancel Print">Cancel Print</button>
                 </div>
             </div>
 
             <div class="clearfix"></div>
-            <div id="dropzone">
+            <div id="dropzone" title="Upload G-code Here">
                 <form action="/upload" class="dropzone" id="mydz" />
             </div>
         </div>
         <div class="col-xs-12 col-md-4">
-
         </div>
     </div>
 
@@ -53,28 +52,28 @@
             <h4 class="text-center">Movement</h4>
             <div class="row">
                 <div class="col-xs-3">
-                    <button type="button" class="btn btn-default btn-block home" data-axis="X">
+                    <button type="button" class="btn btn-default btn-block home" title="Home X Axis" data-axis="X">
                         <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
                             <path id="icons-home" stroke="none" fill="rgb(101, 108, 126)" d="M 0,7.5 L 7,-0 14,7.5 12.13,7.5 12.13,15 8.4,15 8.4,10 5.6,10 5.6,15 1.87,15 1.87,7.5 0,7.5 0,7.5 Z M 0,7.5" />
                         </svg> X
                     </button>
                 </div>
                 <div class="col-xs-3">
-                    <button type="button" class="btn btn-default btn-block home" data-axis="Y">
+                    <button type="button" class="btn btn-default btn-block home" title="Home Y Axis" data-axis="Y">
                         <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
                             <path id="icons-home" stroke="none" fill="rgb(101, 108, 126)" d="M 0,7.5 L 7,-0 14,7.5 12.13,7.5 12.13,15 8.4,15 8.4,10 5.6,10 5.6,15 1.87,15 1.87,7.5 0,7.5 0,7.5 Z M 0,7.5" />
                         </svg> Y
                      </button>
                 </div>
                 <div class="col-xs-3">
-                    <button type="button" class="btn btn-default btn-block home" data-axis="Z">
+                    <button type="button" class="btn btn-default btn-block home" title="Home Z Axis" data-axis="Z">
                         <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
                             <path id="icons-home" stroke="none" fill="rgb(101, 108, 126)" d="M 0,7.5 L 7,-0 14,7.5 12.13,7.5 12.13,15 8.4,15 8.4,10 5.6,10 5.6,15 1.87,15 1.87,7.5 0,7.5 0,7.5 Z M 0,7.5" />
                         </svg> Z
                     </button>
                 </div>
                 <div class="col-xs-3">
-                    <button type="button" class="btn btn-default btn-block home" data-axis="all">
+                    <button type="button" class="btn btn-default btn-block home" title="Home All Axes" data-axis="all">
                         <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
                             <path id="icons-home" stroke="none" fill="rgb(101, 108, 126)" d="M 0,7.5 L 7,-0 14,7.5 12.13,7.5 12.13,15 8.4,15 8.4,10 5.6,10 5.6,15 1.87,15 1.87,7.5 0,7.5 0,7.5 Z M 0,7.5" />
                         </svg>
@@ -83,21 +82,21 @@
             </div>
             <div class="row direction">
                 <div class="col-xs-2 col-xs-offset-2">
-                    <button type="button" class="btn btn-default" data-movement="up" data-axis="Y">
+                    <button type="button" class="btn btn-default" data-movement="up" title="Move Bed Backward" data-axis="Y">
                         <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
                             <path id="icons-upArrow" stroke="none" fill="rgb(101, 108, 126)" d="M 6.5,0 L 1,7 4.5,7 4.5,14 8.5,14 8.5,7 12,7 6.5,0 Z M 6.5,0" />
                         </svg>
                     </button>
                 </div>
-                <div class="col-xs-2 col-xs-offset-3" style="padding-left: 18px;">
-                    <button type="button" class="btn btn-default" data-movement="down" data-axis="Z">
+                <div class="col-xs-2 col-xs-offset-3 text-center">
+                    <button type="button" class="btn btn-default" data-movement="down" title="Raise Z Axis" data-axis="Z">
                          <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
                             <path id="icons-upArrow" stroke="none" fill="rgb(101, 108, 126)" d="M 6.5,0 L 1,7 4.5,7 4.5,14 8.5,14 8.5,7 12,7 6.5,0 Z M 6.5,0" />
                         </svg>
                     </button>
                 </div>
-                <div class="col-xs-3" style="padding-left: 29px;">
-                    <button type="button" class="btn btn-default" data-movement="minus" data-axis="E">
+                <div class="col-xs-3 text-center">
+                    <button type="button" class="btn btn-default" data-movement="minus" title="Retract Filament" data-axis="E">
                         <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
                             <rect id="icons-minus" stroke="none" fill="rgb(101, 108, 126)" x="1" y="6" width="12" height="3.5" />
                         </svg>
@@ -106,39 +105,46 @@
             </div>
             <div class="row direction">
                 <div class="col-xs-2">
-                    <button type="button" class="btn btn-default" data-movement="left" data-axis="X">
+                    <button type="button" class="btn btn-default" data-movement="left" title="Move Extruder Left" data-axis="X">
                         <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
                             <path id="icons-leftArrow" stroke="none" fill="rgb(101, 108, 126)" d="M 14,5.5 C 13.97,5.5 7.05,5.5 7,5.5 6.95,5.5 7,2 7,2 L 0,7.5 7,13 7,9.5 14,9.5 C 14,9.5 14.03,5.5 14,5.5 Z M 14,5.5" />
                         </svg>
                     </button>
                 </div>
-                <div class="col-xs-2 col-xs-offset-2">
-                    <button type="button" class="btn btn-default" data-movement="right" data-axis="X">
+                <div class="col-xs-2">
+                    <button type="button" class="btn btn-default" data-movement="disable" title="Disable Motor Lock">
+                        <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
+                            <path id="icons-text" stroke="none" fill="rgb(101, 108, 126)" d="M 0.54,1 L 3.79,1 C 3.94,1 4.03,1.04 4.06,1.11 4.09,1.19 4.06,1.28 3.95,1.38 L 2.94,2.4 5.09,4.55 C 5.14,4.61 5.17,4.68 5.17,4.75 5.17,4.82 5.14,4.89 5.09,4.94 L 3.94,6.09 C 3.89,6.14 3.82,6.17 3.75,6.17 3.68,6.17 3.61,6.14 3.55,6.09 L 1.4,3.94 0.38,4.95 C 0.28,5.06 0.19,5.09 0.11,5.06 0.04,5.03 0,4.94 0,4.79 L 0,1.54 C 0,1.39 0.05,1.26 0.16,1.16 0.26,1.05 0.39,1 0.54,1 Z M 9.21,1 L 12.46,1 C 12.61,1 12.74,1.05 12.84,1.16 12.95,1.26 13,1.39 13,1.54 L 13,4.79 C 13,4.94 12.96,5.03 12.89,5.06 12.81,5.09 12.72,5.06 12.62,4.95 L 11.6,3.94 9.45,6.09 C 9.39,6.14 9.32,6.17 9.25,6.17 9.18,6.17 9.11,6.14 9.06,6.09 L 7.91,4.94 C 7.86,4.89 7.83,4.82 7.83,4.75 7.83,4.68 7.86,4.61 7.91,4.55 L 10.06,2.4 9.05,1.38 C 8.94,1.28 8.91,1.19 8.94,1.11 8.97,1.04 9.06,1 9.21,1 Z M 3.94,8.91 L 5.09,10.06 C 5.14,10.11 5.17,10.18 5.17,10.25 5.17,10.32 5.14,10.39 5.09,10.45 L 2.94,12.6 3.95,13.62 C 4.06,13.72 4.09,13.81 4.06,13.89 4.03,13.96 3.94,14 3.79,14 L 0.54,14 C 0.39,14 0.26,13.95 0.16,13.84 0.05,13.74 0,13.61 0,13.46 L 0,10.21 C 0,10.06 0.04,9.97 0.11,9.94 0.19,9.91 0.28,9.94 0.38,10.05 L 1.4,11.06 3.55,8.91 C 3.61,8.86 3.68,8.83 3.75,8.83 3.82,8.83 3.89,8.86 3.94,8.91 Z M 11.6,11.06 L 12.62,10.05 C 12.72,9.94 12.81,9.91 12.89,9.94 12.96,9.97 13,10.06 13,10.21 L 13,13.46 C 13,13.61 12.95,13.74 12.84,13.84 12.74,13.95 12.61,14 12.46,14 L 9.21,14 C 9.06,14 8.97,13.96 8.94,13.89 8.91,13.81 8.94,13.72 9.05,13.62 L 10.06,12.6 7.91,10.45 C 7.86,10.39 7.83,10.32 7.83,10.25 7.83,10.18 7.86,10.11 7.91,10.06 L 9.06,8.91 C 9.11,8.86 9.18,8.83 9.25,8.83 9.32,8.83 9.39,8.86 9.45,8.91 L 11.6,11.06 Z M 11.6,11.06" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="col-xs-2">
+                    <button type="button" class="btn btn-default" data-movement="right" title="Move Extruder Right" data-axis="X">
                         <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
                             <path id="icons-rightArrow" stroke="none" fill="rgb(101, 108, 126)" d="M 0,5.5 C -0.03,5.5 7.05,5.5 7,5.5 6.95,5.5 7,2 7,2 L 14,7.5 7,13 7,9.5 0,9.5 C 0,9.5 0.03,5.5 0,5.5 Z M 0,5.5" />
                         </svg>
                     </button>
                 </div>
-                <div class="col-xs-2 col-xs-offset-1 text-center" style="padding-left: 28px;">Z</div>
+                <div class="col-xs-2 col-xs-offset-1 text-center">Z</div>
                 <div class="col-xs-3 text-center">Extrude</div>
             </div>
             <div class="row direction">
                 <div class="col-xs-2 col-xs-offset-2">
-                    <button type="button" class="btn btn-default" data-movement="down" data-axis="Y">
+                    <button type="button" class="btn btn-default" data-movement="down" title="Move Bed Forward" data-axis="Y">
                         <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
                             <path id="icons-downArrow" stroke="none" fill="rgb(101, 108, 126)" d="M 4.5,-0 L 8.5,-0 8.5,7 12,7 6.5,14 1,7 4.5,7 4.5,-0" />
                         </svg>
                     </button>
                 </div>
-                <div class="col-xs-2 col-xs-offset-3" style="padding-left: 18px;">
-                    <button type="button" class="btn btn-default" data-movement="up" data-axis="Z">
+                <div class="col-xs-2 col-xs-offset-3 text-center">
+                    <button type="button" class="btn btn-default" data-movement="up" title="Lower Z Axis" data-axis="Z">
                         <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
                             <path id="icons-downArrow" stroke="none" fill="rgb(101, 108, 126)" d="M 4.5,-0 L 8.5,-0 8.5,7 12,7 6.5,14 1,7 4.5,7 4.5,-0" />
                         </svg>
                     </button>
                 </div>
-                <div class="col-xs-3" style="padding-left: 29px;">
-                    <button type="button" class="btn btn-default" data-movement="plus" data-axis="E">
+                <div class="col-xs-3 text-center">
+                    <button type="button" class="btn btn-default" data-movement="plus" title="Extrude Filament" data-axis="E">
                         <svg class="glyphicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em" width="1em" xml:space="preserve">
                             <path id="icons-plus" stroke="none" fill="rgb(101, 108, 126)" d="M 1,5.75 L 5.25,5.75 5.25,1 8.75,1 8.75,5.75 13,5.75 13,9.25 8.75,9.25 8.75,14 5.25,14 5.25,9.25 1,9.25 1,5.75 Z M 1,5.75" />
                         </svg>
@@ -146,7 +152,7 @@
                 </div>
             </div>
             <div class="row rate">
-                <div class="btn-group center-block" role="group">
+                <div class="btn-group center-block" title="Movement Interval" role="group">
                   <button type="button" class="btn btn-default" data-rate="0.1">0.1</button>
                   <button type="button" class="btn btn-default" data-rate="1">1</button>
                   <button type="button" class="btn btn-default active" data-rate="10">10</button>
@@ -156,13 +162,13 @@
             </div>
         </div>
         <div class="col-xs-12 col-md-4">
-            <div class="well" id="console">
+            <div class="well" id="console" title="Printer Console">
                 <div id="gCodeLog"></div>
             </div>
             <div id="gCodeInput" class="input-group">
-                <input type="text" class="form-control" name="gcode" id="gcode" placeholder="Send GCode to printer..." />
+                <input type="text" class="form-control" name="gcode" id="gcode" placeholder="Send G-code to printer..." />
                 <span class="input-group-btn">
-                    <button class="btn btn-primary" id="gCodeSend">Send</button>
+                    <button class="btn btn-primary" id="gCodeSend" title="Send G-code to Printer">Send</button>
                 </span>
             </div>
         </div>
@@ -174,30 +180,30 @@
                     <h3 id="rde">N/A</h3>
                     <div class="input-group target">
                       <input type="text" class="form-control" id="wre" />
-                      <span class="input-group-addon" id="sete">°C</span>
+                      <span class="input-group-addon" id="sete" title="Set Extruder Preheat">°C</span>
                     </div>
-                    <button type="button" class="btn btn-default btn-sm" id="clre">OFF</button>
+                    <button type="button" class="btn btn-default btn-sm" id="clre" title="Turn Off Extruder Preheat">OFF</button>
                 </div>
                 <div class="col-xs-4 text-center">
                     <h5>Fan Speed</h5>
                     <input id="fanspeed" type="text"/>
-                    <button type="button" class="btn btn-default btn-sm" id="clrfan">OFF</button>
+                    <button type="button" class="btn btn-default btn-sm" id="clrfan" title="Turn Off Fan Preheat">OFF</button>
                 </div>
                 <div class="col-xs4 text-center">
                     <h5>Platform</h5>
                     <h3 id="rdp">N/A</h3>
                     <div class="input-group target">
                       <input type="text" class="form-control" id="wrp" />
-                      <span class="input-group-addon" id="setp">°C</span>
+                      <span class="input-group-addon" id="setp" title="Set Bed Preheat">°C</span>
                     </div>
-                    <button type="button" class="btn btn-default btn-sm" id="clrp">OFF</button>
+                    <button type="button" class="btn btn-default btn-sm" id="clrp" title="Turn Off Bed Preheat">OFF</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
     <footer class="container">
-        <span class="version">Alpha v0.67</span>
+        <span class="version">Alpha v0.7</span>
     </footer>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>

@@ -4,7 +4,7 @@ URL: https://github.com/nokemono42/MP-Select-Mini-Web
 */
 
 $(document).ready( function() {
-  sendCmd( 'M563 S6', 'Enable faster WiFi File Transfer' );
+  sendCmd( 'M563 S6', 'Enable faster Wi-Fi file uploads' );
   // Set to Relative Positioning
   $.ajax({ url: "set?code=G91", cache: false }).done();
 
@@ -61,10 +61,16 @@ $(document).ready( function() {
     comment = 'Move ' + axis;
 
     if ( movement == 'up' || movement == 'left' ) { rate = rate * -1; }
+    if ( axis == 'Z' && movement == 'down' ) { comment = 'Raise Z '; }
+    if ( axis == 'Z' && movement == 'up' ) { comment = 'Lower Z '; }
     if ( axis == 'E' && movement == 'plus' ) { comment = 'Extrude '; }
     if ( axis == 'E' && movement == 'minus' ) {
-      rate = rate * -1;
-      comment = 'Retract ';
+      sendCmd( command + axis + '-' + rate, 'Retract ' + rate + 'mm' );
+      return false;
+    }
+    if ( movement == 'disable' ) {
+      sendCmd( 'M18', 'Disable motor lock' );
+      return false;
     }
 
     sendCmd( command + axis + rate, comment + ' ' + rate + 'mm' );
@@ -86,30 +92,30 @@ $(document).ready( function() {
 
   $("#wre").change( function() {
     var value = pad( $("#wre").val(), 3 );
-    sendCmd( '{C:T0' + value + '}', 'Set Extruder Preheat to ' + $("#wre").val() + '°C', 'cmd' );
+    sendCmd( '{C:T0' + value + '}', 'Set extruder preheat to ' + $("#wre").val() + '°C', 'cmd' );
   } );
 
   $("#sete").click( function() {
     var value = pad( $("#wre").val(), 3 );
-    sendCmd( '{C:T0' + value + '}', 'Set Extruder Preheat to ' + $("#wre").val() + '°C', 'cmd' );
+    sendCmd( '{C:T0' + value + '}', 'Set extruder preheat to ' + $("#wre").val() + '°C', 'cmd' );
   } );
 
   $("#clre").click( function() {
-    sendCmd( '{C:T0000}', 'Turn off Extruder Preheat', 'cmd' );
+    sendCmd( '{C:T0000}', 'Turn off extruder preheat', 'cmd' );
   } );
 
   $("#wrp").change( function() {
     value = pad( $("#wrp").val(), 3 );
-    sendCmd( '{C:P' + value + '}', 'Set Platform Preheat to ' + $("#wrp").val() + '°C', 'cmd' );
+    sendCmd( '{C:P' + value + '}', 'Set platform preheat to ' + $("#wrp").val() + '°C', 'cmd' );
   } );
 
   $("#setp").click( function() {
     value = pad( $("#wrp").val(), 3 );
-    sendCmd( '{C:P' + value + '}', 'Set Platform Preheat to ' + $("#wrp").val() + '°C', 'cmd' );
+    sendCmd( '{C:P' + value + '}', 'Set platform preheat to ' + $("#wrp").val() + '°C', 'cmd' );
   } );
 
   $("#clrp").click( function() {
-    sendCmd( '{C:P000}', 'Turn off Platform Preheat', 'cmd' );
+    sendCmd( '{C:P000}', 'Turn off platform preheat', 'cmd' );
   } );
 
   $("#fanspeed").slider({
@@ -125,7 +131,7 @@ $(document).ready( function() {
   } );
 
   $("#clrfan").click( function() {
-    sendCmd( 'M106 S0', 'Turn off Fan' );
+    sendCmd( 'M106 S0', 'Turn off fan' );
   } );
 
   $("form").submit( function() {
@@ -169,9 +175,9 @@ String.prototype.contains = function( it ) {
   return this.indexOf( it ) != -1;
 };
 
-Dropzone.options.mydz = { dictDefaultMessage: "Upload GCode here",accept: function( file, done ) {
+Dropzone.options.mydz = { dictDefaultMessage: "Upload G-code Here",accept: function( file, done ) {
   if ( file.name.contains( '.g' ) ) done();
-  else done( 'Not a valid GCode file.' );
+  else done( 'Not a valid G-code file.' );
   }, init: function() {
     this.on( 'error', function( file, response ) {
       var errorMessage = response.errorMessage;
@@ -200,7 +206,7 @@ function delaySendSpeed( value ) {
   clearTimeout( timers );
   timers = setTimeout( function() {
     actualSpeed = Math.floor( 255 * (value/100) );
-    sendCmd( 'M106 S' + actualSpeed, 'Set Fan speed to ' + value + '%' );
+    sendCmd( 'M106 S' + actualSpeed, 'Set fan speed to ' + value + '%' );
     $.ajax({ url: "set?code=M106 S" + value, cache: false }).done( function(data) { feedback( data ); } );
   }, 300 );
 }

@@ -110,11 +110,7 @@ footer {
 
 .movement .row { margin-bottom: 14px; }
 .movement .row.rate { margin-bottom: 20px; }
-
-.movement .direction {
-    margin-left: 0;
-    margin-right: 0;
-}
+.movement .direction .text-center { line-height: 2rem; }
 
 .rate .center-block { width: 196px; }
 
@@ -155,3 +151,6 @@ footer {
 .slider.slider-vertical { height: 141px; }
 
 #fanspeed .slider-selection { background: #0272b6; }
+
+#sete,
+#setp { cursor: pointer; }
