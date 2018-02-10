@@ -2,11 +2,12 @@
 
 ## Overview
 
-Upgrade the Malyan 200 or the Monoprice Select Mini's (V1) Web UI and enable faster Wi-Fi file uploads.
+Upgrade the Malyan 200 or the Monoprice Select Mini's (V1 & V2) Web UI and enable faster Wi-Fi file uploads automatically.
 
 Built using Bootstrap so the UI is mobile-friendly and tablet-friendly.
 
 ![Image of the WebUI](https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/master/screenshot.png)
+
 
 ## Getting Started
 
@@ -19,9 +20,11 @@ Built using Bootstrap so the UI is mobile-friendly and tablet-friendly.
 7. It's recommended you power cycle your printer at this point.
 8. Once your printer is back online, browse to `http://IPAddressHere`. You should now have the upgraded Web UI with full manual control.
 
+
 ## Enable Faster Wi-Fi File Uploads
 
-By default the upgraded Web UI will send `M563 S6` on each refresh to ensure faster Wi-Fi file uploads is enabled.
+By default the upgraded Web UI will send `M563 S5` on each refresh to ensure faster Wi-Fi file uploads is enabled. Note: Since the V2 uses `M563 S5` this will be the initial start up code, instead of `M563 S6`.
+
 
 ## Offline Usage
 
@@ -29,13 +32,15 @@ While you may want to update the UI of the printer, you don't want the web serve
 
 But if you want to use the Web UI without an active Internet connection, delete the `webui.html` file and rename `webui-offline.html` to `webui.html`.
 
+
 ## Troubleshooting
 
 Did something break? Here's how you can undo the Web UI upgrade.
 
 1. Turn off the printer. Wait about 10 seconds and then turn it back on.
-3. Once it's on, go DIRECTLY to `http://IPAddressHere/up`.
+3. Once it's on and connected to Wi-Fi browse to `http://IPAddressHere/up`.
 4. Just click the "Upload web" button without choosing a file and this will restore the factory web UI.
+
 
 ## Credits
 
@@ -46,6 +51,7 @@ Jason Jones (Original Code)
 Matthew Upp (Middle Man)
 
 Mario Anthony Galliano (Facebook Group posting with upgrade/downgrade instructions.)
+
 
 ## Upcoming Improvements
 
