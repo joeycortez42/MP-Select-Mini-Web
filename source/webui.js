@@ -222,7 +222,7 @@ function delaySendSpeed(value) {
 function delaySyncTemperatures(extruder, platform) {
 	clearTimeout( timers );
 	timers = setTimeout(function() {
-		if (!$('wre').is(":focus")) { $("#wre").val(extruder); }
-		if (!$('wrp').is(":focus")) { $("#wrp").val(platform); }
+		if (!$('#wre').is(":focus")) { $("#wre").val(extruder); }
+		if (!$('#wrp').is(":focus")) { $("#wrp").val(platform); }
 	}, 3000);
 }
