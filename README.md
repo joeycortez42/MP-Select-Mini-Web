@@ -4,9 +4,11 @@
 
 Upgrade the Malyan M200 or the Monoprice Select Mini's V1 Web UI and enable faster Wi-Fi file uploads automatically. For V2, download the [V2 branch](https://github.com/nokemono42/MP-Select-Mini-Web/tree/v2).
 
-Requires UI Controller firmware version 42 to enable the custom Web UI.
+Note: Requires UI Controller firmware version 42 or greater to enable the custom Web UI. This has not been tested on anything lower then firmware version 42.
 
-This Web UI is built using Bootstrap so its mobile-friendly and tablet-friendly. Multiple browser connections are supported. The GCode commands are sent via Web Sockets so all browser windows will display the printer responses.
+![Image of printer LCD](https://mpselectmini.com/_detail/firmware_version_explanation.png)
+
+This Web UI is built using Bootstrap so its mobile-friendly and tablet-friendly. Multiple browser connections are supported. GCode commands are sent via Web Sockets so all browser windows will display the printer responses.
 
 ![Image of the WebUI](https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/master/screenshot.png)
 
@@ -14,30 +16,31 @@ This Web UI is built using Bootstrap so its mobile-friendly and tablet-friendly.
 ## Getting Started
 
 1. Download and unzip `MP-Select-Mini-Web` from GitHub.
-2. Point a web browser window to your printer's IP address. `http://IPAddressHere`
+2. Point a web browser window to your printer's IP address. `http://IPAddressHere` This is the default Web UI.
 3. Now browse to the upgrade page. `http://IPAddressHere/up`
 4. Click the third "Choose file" and select the "webui.html" file from the folder you unzipped earlier.
 5. Click "Upload web."
 6. If you see "OK" you are good to go!
-7. It's recommended you power cycle your printer at this point.
-8. Once your printer is back online, browse to `http://IPAddressHere`. You should now have the upgraded Web UI with full manual control.
+7. It's recommended you power cycle your printer, but not necessary.
+8. Once your printer is back online, browse to `http://IPAddressHere`. You should now have the upgraded Web UI.
 
 
 ## Enable Faster Wi-Fi File Uploads
 
-By default the upgraded Web UI will send `M563 S6` on each refresh to ensure faster Wi-Fi file uploads is enabled. This setting doesn't persist after the printer had been powered off.
+By default the upgraded Web UI will send `M563 S6` on each refresh to ensure faster Wi-Fi file uploads are enabled. This setting doesn't persist after the printer had been powered off.
 
-Note: Since S6 is currently broken due to V2 firmware bug the V2 uses `M563 S5`. See [V2 branch](https://github.com/nokemono42/MP-Select-Mini-Web/tree/v2).
+Note: Since S6 is currently broken due to V2 firmware bug the V2 branch uses `M563 S5`. See [V2 branch](https://github.com/nokemono42/MP-Select-Mini-Web/tree/v2).
 
- S values can be 2 - 6. Transfers happen over telnet which blocks the sending of any other GCode commands and limits how fast the files can be transfered. The sweet spot seems to be less then 12 MB of GCode. Files larger then that take over 2 minutes to transfer.
+M563 parameters can be values between S2 - S6. Transfers happen over telnet which blocks the sending of any other GCode commands and limits how fast the files can be transfered. The sweet spot seems to be less then 12 MB of GCode. Files larger then that take over 2 minutes to transfer.
 
-| M563 S# | Avg Transfer Speed | Supported On     |
-| ------- | -----------------: | ---------------- |
-| S2      |            39 Kbps | Firmware Default |
-| S3      |            63 Kbps | All              |
-| S4      |            90 Kbps | All              |
-| S5      |           102 Kbps | Only V2 / Delta  |
-| S6      |           112 Kbps | Only V1          |
+| M563 S# | Avg Transfer Speed | Supported On             |
+| ------- | -----------------: | ------------------------ |
+| S2      |            39 Kbps | Same as Firmware Default |
+| S3      |            63 Kbps | All                      |
+| S4      |            90 Kbps | All                      |
+| S5      |           102 Kbps | V2 / Delta               |
+| S6      |           112 Kbps | V1                       |
+
 
 ## Offline Usage
 
@@ -51,8 +54,8 @@ But if you want to use the Web UI without an active Internet connection, delete 
 Did something break? Here's how you can undo the Web UI upgrade.
 
 1. Turn off the printer. Wait about 10 seconds and then turn it back on.
-3. Once it's on and connected to Wi-Fi browse to `http://IPAddressHere/up`.
-4. Just click the "Upload web" button without choosing a file and this will restore the factory web UI.
+2. Once it's on and connected to Wi-Fi browse to `http://IPAddressHere/up`.
+3. Just click the "Upload web" button without choosing a file and this will restore the factory Web UI.
 
 
 ## Credits
