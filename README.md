@@ -2,9 +2,11 @@
 
 ## Overview
 
-Upgrade the Malyan 200 or the Monoprice Select Mini's (V1 & V2) Web UI and enable faster Wi-Fi file uploads automatically.
+Upgrade the Malyan M200 or the Monoprice Select Mini's V1 Web UI and enable faster Wi-Fi file uploads automatically. For V2, download the [V2 branch](https://github.com/nokemono42/MP-Select-Mini-Web/tree/v2).
 
-Built using Bootstrap so the UI is mobile-friendly and tablet-friendly.
+Requires UI Controller firmware version 42 to enable the custom Web UI.
+
+This Web UI is built using Bootstrap so its mobile-friendly and tablet-friendly. Multiple browser connections are supported. The GCode commands are sent via Web Sockets so all browser windows will display the printer responses.
 
 ![Image of the WebUI](https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/master/screenshot.png)
 
@@ -23,8 +25,19 @@ Built using Bootstrap so the UI is mobile-friendly and tablet-friendly.
 
 ## Enable Faster Wi-Fi File Uploads
 
-By default the upgraded Web UI will send `M563 S5` on each refresh to ensure faster Wi-Fi file uploads is enabled. Note: Since the V2 uses `M563 S5` this will be the initial start up code, instead of `M563 S6`.
+By default the upgraded Web UI will send `M563 S6` on each refresh to ensure faster Wi-Fi file uploads is enabled. This setting doesn't persist after the printer had been powered off.
 
+Note: Since S6 is currently broken due to V2 firmware bug the V2 uses `M563 S5`. See [V2 branch](https://github.com/nokemono42/MP-Select-Mini-Web/tree/v2).
+
+ S values can be 2 - 6. Transfers happen over telnet which blocks the sending of any other GCode commands and limits how fast the files can be transfered. The sweet spot seems to be less then 12 MB of GCode. Files larger then that take over 2 minutes to transfer.
+
+| M563 S# | Avg Transfer Speed | Supported On     |
+| ------- | -----------------: | ---------------- |
+| S2      |            39 Kbps | Firmware Default |
+| S3      |            63 Kbps | All              |
+| S4      |            90 Kbps | All              |
+| S5      |           102 Kbps | Only V2 / Delta  |
+| S6      |           112 Kbps | Only V1          |
 
 ## Offline Usage
 
@@ -56,13 +69,11 @@ Mario Anthony Galliano (Facebook Group posting with upgrade/downgrade instructio
 ## Upcoming Improvements
 
 * Test on MPSM V2
+* Change multiplier
 * Show time lasped / time remaining
 * Show filename that is printing
-* Change multiplier
 * Rename cache.gc file with M566 after upload
-* Print done / presentation button. (Gantry away put all the way forward.)
-* Query SD card for list of files
-* Delete file from SD card
-* Print file from SD card
-* Rename file from SD card
-* Refresh SD card
+* Query SD card for list of files M20
+*   Delete file from SD card M30
+*   Print file from SD card M24
+*   Pause print M25

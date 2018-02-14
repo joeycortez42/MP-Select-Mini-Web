@@ -11,16 +11,16 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/css/bootstrap-slider.min.css" />
         <!-- -->
-        <link rel="stylesheet" href="https://rawgit.com/nokemono42/MP-Select-Mini-Web/master/source/webui.min.css"/>
+        <link rel="stylesheet" href="https://rawgit.com/nokemono42/MP-Select-Mini-Web/master/source/webui.min.css" />
         <!-- --
-        <link rel="stylesheet" href="source/webui.css"/>
+        <link rel="stylesheet" href="http://mpselectmini.dev.192.168.42.5.xip.io:8888/source/webui.css" />
         <!-- -->
-        <link rel="shortcut icon" href="https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/master/favicon/favicon.ico">
-		<link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/master/favicon/apple-touch-icon.png">
-		<link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/master/favicon/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/master/favicon/favicon-16x16.png">
-		<link rel="manifest" href="https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/master/favicon/site.webmanifest">
-		<link rel="mask-icon" href="https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/master/favicon/favicon.svg?sanitize=true" color="#000000">
+        <link rel="shortcut icon" href="https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/master/favicon/favicon.ico" />
+		<link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/master/favicon/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/master/favicon/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/master/favicon/favicon-16x16.png" />
+		<link rel="manifest" href="https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/master/favicon/site.webmanifest" />
+		<link rel="mask-icon" href="https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/master/favicon/favicon.svg?sanitize=true" color="#000000" />
 		<meta name="msapplication-TileColor" content="#2d89ef">
 		<meta name="theme-color" content="#ffffff">
     </head>
@@ -34,7 +34,7 @@
 
     <div class="row">
         <div class="col-xs-12 col-md-4 webcam text-center">
-            <img class="img-rounded" title="MP Select Mini" src="https://images.monoprice.com/productlargeimages/153651.jpg">
+            <img class="img-rounded" title="MP Select Mini" src="https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/master/mpsm_v1_255.jpg">
         </div>
         <div class="col-xs-12 col-md-4 print-actions">
             <div class="row">
@@ -51,7 +51,8 @@
                 <form action="/upload" class="dropzone" id="mydz" />
             </div>
         </div>
-        <div class="col-xs-12 col-md-4">
+        <div class="col-xs-12 col-md-4 sd-files">
+            <ul class="file-listing"></ul>
         </div>
     </div>
 
@@ -211,16 +212,20 @@
     </div>
 </div>
     <footer class="container">
-        <span class="version">Alpha v0.8</span>
+        <span class="version">Alpha v0.9</span>
     </footer>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/bootstrap-slider.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/bootstrap-slider.min.js"></script>
         <!-- -->
-        <script src="https://rawgit.com/nokemono42/MP-Select-Mini-Web/master/source/webui.min.js"></script>
+        <script type="text/javascript" src="https://rawgit.com/nokemono42/MP-Select-Mini-Web/master/source/swfobject.js"></script>
+        <script type="text/javascript" src="https://rawgit.com/nokemono42/MP-Select-Mini-Web/master/source/web_socket.min.js"></script>
+        <script type="text/javascript" src="https://rawgit.com/nokemono42/MP-Select-Mini-Web/master/source/webui.min.js"></script>
         <!-- --
-        <script src="source/webui.js"></script>
+        <script type="text/javascript" src="http://mpselectmini.dev.192.168.42.5.xip.io:8888/source/swfobject.js"></script>
+        <script type="text/javascript" src="http://mpselectmini.dev.192.168.42.5.xip.io:8888/source/web_socket.min.js"></script>
+        <script type="text/javascript" src="http://mpselectmini.dev.192.168.42.5.xip.io:8888/source/webui.js"></script>
         <!-- -->
     </body>
 </html>

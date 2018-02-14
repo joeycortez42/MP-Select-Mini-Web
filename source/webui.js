@@ -3,43 +3,13 @@ Name: MP Select Mini Web Javascript
 URL: https://github.com/nokemono42/MP-Select-Mini-Web
 */
 
-$(document).ready( function() {
-	sendCmd('M563 S5', 'Enable faster Wi-Fi file uploads');
-	// Set to Relative Positioning
-	$.ajax({ url: "set?code=G91", cache: false }).done();
+$(document).ready(function() {
+	printerStatus();
+	startup();
 
-	/* */
-	setInterval( function() {
-		$.get("inquiry", function(data, status) {
-			console.log(data);
-
-			//$("#gCodeLog").append('<p class="text-muted">' + data + '</p>');
-			//scrollConsole();
-
-			$("#rde").text(data.match( /\d+/g )[0]);
-			$("#rdp").text(data.match( /\d+/g )[2]);
-
-			delaySyncTemperatures(data.match( /\d+/g )[1], data.match( /\d+/g )[3]);
-
-			var c = data.charAt(data.length - 1);
-
-			if (c == 'I') {
-				$("#stat").text('Idle');
-				$("#pgs").css('width', '0%');
-				$(".movement button").removeClass('btn-disable');
-				$("#gCodeSend").removeClass('btn-disable');
-			} else if (c == 'P') {
-				$("#stat").text('Printing');
-				$("#pgs").css('width', data.match(/\d+/g )[4] + '%');
-				$("#pgs").html(data.match(/\d+/g )[4] + '% Complete');
-				$(".movement button").addClass('btn-disable');
-				$("#gCodeSend").addClass('btn-disable');
-			} else {
-				$("#stat").text('N/A');
-			}
-		});
-	}, 3500);
-	/* */
+	setInterval(function() {
+		printerStatus();
+	}, 2000);
 
 	$(".movement .home").click(function() {
 		axis = $(this).attr("data-axis");
@@ -93,13 +63,11 @@ $(document).ready( function() {
 	});
 
 	$("#wre").change(function() {
-		var value = pad($("#wre").val(), 3);
-		sendCmd( '{C:T0' + value + '}', 'Set extruder preheat to ' + $("#wre").val() + '°C', 'cmd' );
+		delaySendTemp($("#wre").val(), 'extruder');
 	});
 
 	$("#sete").click(function() {
-		var value = pad($("#wre").val(), 3);
-		sendCmd('{C:T0' + value + '}', 'Set extruder preheat to ' + $("#wre").val() + '°C', 'cmd');
+		delaySendTemp($("#wre").val(), 'extruder');
 	});
 
 	$("#clre").click(function() {
@@ -107,13 +75,11 @@ $(document).ready( function() {
 	});
 
 	$("#wrp").change(function() {
-		value = pad($("#wrp").val(), 3);
-		sendCmd('{C:P' + value + '}', 'Set platform preheat to ' + $("#wrp").val() + '°C', 'cmd');
+		delaySendTemp($("#wrp").val(), 'platform');
 	});
 
 	$("#setp").click(function() {
-		value = pad($("#wrp").val(), 3);
-		sendCmd('{C:P' + value + '}', 'Set platform preheat to ' + $("#wrp").val() + '°C', 'cmd');
+		delaySendTemp($("#wrp").val(), 'platform');
 	});
 
 	$("#clrp").click(function() {
@@ -128,7 +94,7 @@ $(document).ready( function() {
 		}
 	});
 
-	$("#fanspeed").on('slide', function(slideEvt)  {
+	$("#fanspeed").on('slide', function(slideEvt) {
 		delaySendSpeed(slideEvt.value);
 	});
 
@@ -153,34 +119,76 @@ function scrollConsole() {
 	$cont[0].scrollTop = $cont[0].scrollHeight;
 }
 
-function sendCmd(cmd, comment, type) {
-	if (type === undefined) { type = "code"; }
-	clearTimeout(timers);
-	timers = setTimeout(function() {
-		$("#gCodeLog").append('<p class="text-primary">' + cmd + ' <span class="text-muted">; ' + comment +'</span></p>');
-
-		$.ajax({ url: 'set?' + type + '=' + cmd, cache: false }).done(function(data) {
-			$("#gCodeLog").append('<p class="text-warning">' + data + '</p>');
-			scrollConsole();
-		});
-
-		scrollConsole();
-	}, 300);
-}
-
 function feedback(output) {
-	$("#gCodeLog").append('<p class="text-warning">' + output + '</p>');
+	msg = output.replace(/N0 P15 B15/g, '');
+	msg = msg.replace(/N0 P14 B15/g, '');
+	msg = msg.replace(/echo:/g, '');
+	$("#gCodeLog").append('<p class="text-warning">' + msg + '</p>');
 	scrollConsole();
 }
 
-String.prototype.contains = function( it ) {
-	return this.indexOf( it ) != -1;
+function sendCmd(code, comment, type) {
+	if (type === undefined) { type = "code"; }
+	
+	$("#gCodeLog").append('<p class="text-primary">' + code + ' <span class="text-muted">; ' + comment + '</span></p>');
+
+	if (type == 'cmd') {
+		$.ajax({ url: 'set?' + type + '=' + code, cache: false }).done(function(data) {
+			feedback(data);
+		});
+	} else {
+		ws.send(code);
+	}
+
+	scrollConsole();
+}
+
+function initWebSocket() {
+	url = window.location.hostname;
+
+	try {
+		ws = new WebSocket('ws://' + url + ':81');
+		ws.onopen = function() {
+			feedback('Connected');
+		};
+		ws.onmessage = function(a) {
+			feedback(a.data);
+		};
+		ws.onclose = function() {
+			feedback('Disconnected');
+		}
+	} catch (a) {
+		feedback('Web Socket Error');
+	}
+}
+
+function msToTime(duration) {
+	var milliseconds = parseInt((duration%1000)/100),
+		seconds = parseInt((duration/1000)%60),
+		minutes = parseInt((duration/(1000*60))%60),
+		hours = parseInt((duration/(1000*60*60))%24);
+
+	hours = (hours < 10) ? "0" + hours : hours;
+	minutes = (minutes < 10) ? "0" + minutes : minutes;
+	seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+	return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+}
+
+String.prototype.contains = function(it) {
+	return this.indexOf(it) != -1;
 };
 
-Dropzone.options.mydz = { dictDefaultMessage: "Upload G-code Here",
+Dropzone.options.mydz = {
 	accept: function(file, done) {
 		if (file.name.contains('.g')) {
+			//window.startTimer = new Date();
+			
 			done();
+			$(".print-actions button").addClass('btn-disable');
+			$(".movement button").addClass('btn-disable');
+			$("#gCodeSend").addClass('btn-disable');
+			$(".temperature button").addClass('btn-disable');
 		} else {
 			done('Not a valid G-code file.');
 		}
@@ -195,6 +203,19 @@ Dropzone.options.mydz = { dictDefaultMessage: "Upload G-code Here",
 				this.removeFile(this.files[0]);
 			}
 		});
+
+		this.on('complete', function(file) {
+			//File upload duration
+			//endTimer = new Date();
+			//duration = endTimer - window.startTimer;
+			//alert(msToTime(duration));
+
+			$(".print-actions button").removeClass('btn-disable');
+			$(".movement button").removeClass('btn-disable');
+			$("#gCodeSend").removeClass('btn-disable');
+			$(".temperature button").removeClass('btn-disable');
+			sendCmd('M566 ' + file.name, '');
+		});
 	}
 };
 
@@ -208,15 +229,70 @@ function cancel_p() {
 	sendCmd('{P:X}', 'Cancel print', 'cmd');
 }
 
+function printerStatus() {
+	$.get("inquiry", function(data, status) {
+		//console.log(data);
+		//$("#gCodeLog").append('<p class="text-muted">' + data + '</p>');
+		//scrollConsole();
+
+		$("#rde").text(data.match( /\d+/g )[0]);
+		$("#rdp").text(data.match( /\d+/g )[2]);
+
+		delaySyncTemperatures(data.match( /\d+/g )[1], data.match( /\d+/g )[3]);
+
+		var c = data.charAt(data.length - 1);
+
+		if (c == 'I') {
+			$("#stat").text('Idle');
+			$("#pgs").css('width', '0%');
+			$(".movement button").removeClass('btn-disable');
+			$("#gCodeSend").removeClass('btn-disable');
+		} else if (c == 'P') {
+			$("#stat").text('Printing');
+			$("#pgs").css('width', data.match(/\d+/g )[4] + '%');
+			$("#pgs").html(data.match(/\d+/g )[4] + '% Complete');
+			$(".movement button").addClass('btn-disable');
+			$("#gCodeSend").addClass('btn-disable');
+		} else {
+			$("#stat").text('N/A');
+		}
+	});
+}
+
+function startup() {
+	initWebSocket();
+
+	if ($("#stat").text() != 'Printing') {
+		setTimeout(function() {
+			sendCmd('M563 S4', 'Enable faster Wi-Fi file uploads');
+			sendCmd('G91', 'Set to Relative Positioning');
+		}, 1750);
+	} else {
+		alert('Printing');
+	}
+}
+
+function delaySendTemp(value, device) {
+	clearTimeout(timers);
+	timers = setTimeout(function() {
+		compValue = pad(value, 3);
+
+		if (device == 'extruder') {
+			sendCmd('{C:T0' + compValue + '}', 'Set extruder preheat to ' + value + '°C', 'cmd');
+		}
+
+		if (device == 'platform') {
+			sendCmd('{C:P' + compValue + '}', 'Set platform preheat to ' + value + '°C', 'cmd');
+		}
+	}, 250);
+}
+
 function delaySendSpeed(value) {
 	clearTimeout(timers);
 	timers = setTimeout(function() {
 		actualSpeed = Math.floor(255 * (value/100));
 		sendCmd('M106 S' + actualSpeed, 'Set fan speed to ' + value + '%');
-		$.ajax({ url: "set?code=M106 S" + value, cache: false }).done(
-			function(data) { feedback(data); }
-		);
-	}, 300);
+	}, 250);
 }
 
 function delaySyncTemperatures(extruder, platform) {
@@ -225,4 +301,8 @@ function delaySyncTemperatures(extruder, platform) {
 		if (!$('#wre').is(":focus")) { $("#wre").val(extruder); }
 		if (!$('#wrp').is(":focus")) { $("#wrp").val(platform); }
 	}, 3000);
+}
+
+function refreshSD() {
+	sendCmd('M563 S3', 'Enable faster Wi-Fi file uploads');
 }
