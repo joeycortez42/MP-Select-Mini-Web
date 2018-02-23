@@ -4,11 +4,11 @@
 
 Upgrade the Malyan M200 or the Monoprice Select Mini's V1 Web UI and enable faster Wi-Fi file uploads automatically. For V2, download the [V2 branch](https://github.com/nokemono42/MP-Select-Mini-Web/tree/v2).
 
-Note: Requires UI Controller firmware version 42 or greater to enable the custom Web UI. This has not been tested on anything lower then firmware version 42.
+Note: Requires UI Controller firmware version 42 or greater to enable a custom Web UI.
 
-![Image of printer LCD](https://mpselectmini.com/_detail/firmware_version_explanation.png)
+![Image of printer LCD](https://mpselectmini.com/_media/firmware_version_explanation.png?cache= =333x250)
 
-This Web UI is built using Bootstrap so its mobile-friendly and tablet-friendly. Multiple browser connections are supported. GCode commands are sent via Web Sockets so all browser windows will display the printer responses.
+This Web UI is built using Bootstrap so its mobile-friendly and tablet-friendly. Multiple browser connections are supported. GCode responses are sent via Web Sockets so all browser windows will display the printer responses. GCode commands are sent via the REST API since sending via Web Sockets proved to be unreliable.
 
 ![Image of the WebUI](https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/master/screenshot.png)
 
@@ -36,9 +36,9 @@ M563 parameters can be values between S2 - S6. Transfers happen over telnet whic
 | M563 S# | Avg Transfer Speed | Supported On             |
 | ------- | -----------------: | ------------------------ |
 | S2      |            39 Kbps | Same as Firmware Default |
-| S3      |            63 Kbps | All                      |
-| S4      |            90 Kbps | All                      |
-| S5      |           102 Kbps | V2 / Delta               |
+| S3      |            63 Kbps | V1 / V2 / Delta          |
+| S4      |            91 Kbps | V1 / V2 / Delta          |
+| S5      |           103 Kbps | V2                       |
 | S6      |           112 Kbps | V1                       |
 
 
@@ -71,12 +71,13 @@ Mario Anthony Galliano (Facebook Group posting with upgrade/downgrade instructio
 
 ## Upcoming Improvements
 
-* Test on MPSM V2
+* Test on MP Select Mini V2
+* Create V2 Branch
+* Create Delta Mini repo
 * Change multiplier
-* Show time lasped / time remaining
-* Show filename that is printing
-* Rename cache.gc file with M566 after upload
+* Rename cache.gc file with M566 after upload (Pending more SD functions)
 * Query SD card for list of files M20
 *   Delete file from SD card M30
 *   Print file from SD card M24
 *   Pause print M25
+* Start printer state. If inquiry not able to load, reset page bool values. (Same as page refresh)

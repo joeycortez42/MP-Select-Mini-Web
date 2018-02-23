@@ -5,7 +5,11 @@ URL: https://github.com/nokemono42/MP-Select-Mini-Web
 
 $(document).ready(function() {
 	printerStatus();
-	startup();
+	initWebSocket();
+
+	setTimeout(function() {
+		startup();
+	}, 2000);
 
 	setInterval(function() {
 		printerStatus();
@@ -23,6 +27,7 @@ $(document).ready(function() {
 		}
 
 		sendCmd(code, 'Home ' + comment);
+		setPositioning = false;
 	});
 
 	$(".movement .direction button").click(function() {
@@ -32,17 +37,22 @@ $(document).ready(function() {
 		axis = $(this).attr("data-axis");
 		comment = 'Move ' + axis;
 
+		if (setPositioning == false) {
+			sendCmd('G91', 'Set to Relative Positioning');
+			setPositioning = true;
+		}
+
 		if (movement == 'up' || movement == 'left') { rate = rate * -1; }
 		if (axis == 'Z' && movement == 'down') { comment = 'Raise Z '; }
 		if (axis == 'Z' && movement == 'up') { comment = 'Lower Z '; }
 		if (axis == 'E' && movement == 'plus') { comment = 'Extrude '; }
 		if (axis == 'E' && movement == 'minus') {
 			sendCmd(command + axis + '-' + rate, 'Retract ' + rate + 'mm');
-			return false;
+			return;
 		}
 		if (movement == 'disable') {
 			sendCmd('M18', 'Disable motor lock');
-			return false;
+			return;
 		}
 
 		sendCmd(command + axis + rate, comment + ' ' + rate + 'mm');
@@ -108,6 +118,7 @@ $(document).ready(function() {
 });
 
 var timers = {};
+var setPositioning = false;
 
 function pad(num, size) {
 	s = '000' + num;
@@ -120,10 +131,20 @@ function scrollConsole() {
 }
 
 function feedback(output) {
-	msg = output.replace(/N0 P15 B15/g, '');
-	msg = msg.replace(/N0 P14 B15/g, '');
-	msg = msg.replace(/echo:/g, '');
-	$("#gCodeLog").append('<p class="text-warning">' + msg + '</p>');
+	if (output.substring(0, 2) == 'T:') {
+		//Hide temperature reporting
+		return;
+	}
+
+	if (output.substring(0, 5) == 'ok N0') {
+		output = 'ok';
+	}
+
+	$("#gCodeLog").append('<p class="text-warning">' + output + '</p>');
+
+	//if (output.substring(0, 5) == 'Begin') {
+		//$(".sd-files").html('<p>' + output + '</p>');
+	//}
 	scrollConsole();
 }
 
@@ -132,13 +153,8 @@ function sendCmd(code, comment, type) {
 	
 	$("#gCodeLog").append('<p class="text-primary">' + code + ' <span class="text-muted">; ' + comment + '</span></p>');
 
-	if (type == 'cmd') {
-		$.ajax({ url: 'set?' + type + '=' + code, cache: false }).done(function(data) {
-			feedback(data);
-		});
-	} else {
-		ws.send(code);
-	}
+	$.ajax({ url: 'set?' + type + '=' + code, cache: false }).done();
+	//ws.send(code);
 
 	scrollConsole();
 }
@@ -149,7 +165,7 @@ function initWebSocket() {
 	try {
 		ws = new WebSocket('ws://' + url + ':81');
 		ws.onopen = function() {
-			feedback('Connected');
+			feedback('Connection Established');
 		};
 		ws.onmessage = function(a) {
 			feedback(a.data);
@@ -183,7 +199,7 @@ Dropzone.options.mydz = {
 	accept: function(file, done) {
 		if (file.name.contains('.g')) {
 			//window.startTimer = new Date();
-			
+
 			done();
 			$(".print-actions button").addClass('btn-disable');
 			$(".movement button").addClass('btn-disable');
@@ -214,7 +230,10 @@ Dropzone.options.mydz = {
 			$(".movement button").removeClass('btn-disable');
 			$("#gCodeSend").removeClass('btn-disable');
 			$(".temperature button").removeClass('btn-disable');
-			sendCmd('M566 ' + file.name, '');
+
+			//setTimeout(function() {
+				//sendCmd('M566 ' + file.name, '');
+			//}, 1000);
 		});
 	}
 };
@@ -245,12 +264,14 @@ function printerStatus() {
 		if (c == 'I') {
 			$("#stat").text('Idle');
 			$("#pgs").css('width', '0%');
+			$("#start_print").removeClass('btn-disable');
 			$(".movement button").removeClass('btn-disable');
 			$("#gCodeSend").removeClass('btn-disable');
 		} else if (c == 'P') {
 			$("#stat").text('Printing');
 			$("#pgs").css('width', data.match(/\d+/g )[4] + '%');
 			$("#pgs").html(data.match(/\d+/g )[4] + '% Complete');
+			$("#start_print").addClass('btn-disable');
 			$(".movement button").addClass('btn-disable');
 			$("#gCodeSend").addClass('btn-disable');
 		} else {
@@ -260,15 +281,8 @@ function printerStatus() {
 }
 
 function startup() {
-	initWebSocket();
-
 	if ($("#stat").text() != 'Printing') {
-		setTimeout(function() {
-			sendCmd('M563 S4', 'Enable faster Wi-Fi file uploads');
-			sendCmd('G91', 'Set to Relative Positioning');
-		}, 1750);
-	} else {
-		alert('Printing');
+		sendCmd('M563 S6', 'Enable faster Wi-Fi file uploads');
 	}
 }
 
@@ -304,5 +318,6 @@ function delaySyncTemperatures(extruder, platform) {
 }
 
 function refreshSD() {
-	sendCmd('M563 S3', 'Enable faster Wi-Fi file uploads');
+	sendCmd('M21', 'Initialize SD card');
+	sendCmd('M20', 'List SD card files');
 }
