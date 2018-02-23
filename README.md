@@ -6,9 +6,9 @@ Upgrade the Malyan M200 or the Monoprice Select Mini's V1 Web UI and enable fast
 
 Note: Requires UI Controller firmware version 42 or greater to enable a custom Web UI.
 
-![Image of printer LCD](https://mpselectmini.com/_media/firmware_version_explanation.png?cache= =333x250)
+![Image of printer LCD](https://mpselectmini.com/_media/firmware_version_explanation.png?cache =333x250)
 
-This Web UI is built using Bootstrap so its mobile-friendly and tablet-friendly. Multiple browser connections are supported. GCode responses are sent via Web Sockets so all browser windows will display the printer responses. GCode commands are sent via the REST API since sending via Web Sockets proved to be unreliable.
+This Web UI is built using Bootstrap so its mobile-friendly and tablet-friendly. Multiple browser connections are supported. GCode responses are sent via Web Sockets so all browser windows will display the printer responses. GCode commands are sent via the REST API, since sending via Web Sockets proved to be unreliable.
 
 ![Image of the WebUI](https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/master/screenshot.png)
 
