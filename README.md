@@ -2,7 +2,7 @@
 
 ## Overview
 
-Upgrade the Malyan M200 or the Monoprice Select Mini's V1 Web UI and enable faster Wi-Fi file uploads automatically. For V2, download the [V2 branch](https://github.com/nokemono42/MP-Select-Mini-Web/tree/v2).
+Upgrade the Malyan M200 or the Monoprice Select Mini's V1 Web UI and enable faster Wi-Fi file uploads automatically.
 
 Note: Requires UI Controller firmware version 42 or greater to enable a custom Web UI.
 
@@ -10,7 +10,7 @@ Note: Requires UI Controller firmware version 42 or greater to enable a custom W
 
 This Web UI is built using Bootstrap so its mobile-friendly and tablet-friendly. Multiple browser connections are supported. GCode responses are sent via Web Sockets so all browser windows will display the printer responses. GCode commands are sent via the REST API, since sending via Web Sockets proved to be unreliable.
 
-![Image of the WebUI](https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/master/screenshot.png)
+![Image of the WebUI](https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/SDCard/images/screenshot.png)
 
 
 ## Getting Started
@@ -29,17 +29,28 @@ This Web UI is built using Bootstrap so its mobile-friendly and tablet-friendly.
 
 By default the upgraded Web UI will send `M563 S6` on each refresh to ensure faster Wi-Fi file uploads are enabled. This setting doesn't persist after the printer had been powered off.
 
-Note: Since S6 is currently broken due to V2 firmware bug the V2 branch uses `M563 S5`. See [V2 branch](https://github.com/nokemono42/MP-Select-Mini-Web/tree/v2).
+Note: Since S6 is currently broken due to V2 firmware bug use `M563 S5`.
 
 M563 parameters can be values between S2 - S6. Transfers happen over telnet which blocks the sending of any other GCode commands and limits how fast the files can be transfered. The sweet spot seems to be less then 12 MB of GCode. Files larger then that take over 2 minutes to transfer.
 
 | M563 S# | Avg Transfer Speed | Supported On             |
 | ------- | -----------------: | ------------------------ |
 | S2      |            39 Kbps | Same as Firmware Default |
-| S3      |            63 Kbps | V1 / V2 / Delta          |
-| S4      |            91 Kbps | V1 / V2 / Delta          |
-| S5      |           103 Kbps | V2                       |
+| S3      |            63 Kbps | V1 / V2? / Delta         |
+| S4      |            91 Kbps | V1 / V2? / Delta         |
+| S5      |           103 Kbps | V2?                      |
 | S6      |           112 Kbps | V1                       |
+
+
+## SD Card Features
+
+The file listing is loaded when the "refresh" icon is clicked. File names in the Web UI will be limited to XX characters. The printer can support longer, but it cuts off the extension and name after XX characters.
+
+File uploaded will be renamed from "cache.gc" to the original file name. If you are reuploading a previous file the old file is deleted first, then the file is renamed. 
+
+The print icon select the file for print `M32`, and `M24` tell the printer to print it, but it won't set the target tempatures. Pre-heat before requesting to print a file. Once the extruder and bed are at the target temperatures then the printer LCD will display the printing screen.
+
+The delete icon will delete the file, `M30`, and refresh the file listing.
 
 
 ## Offline Usage
@@ -75,9 +86,4 @@ Mario Anthony Galliano (Facebook Group posting with upgrade/downgrade instructio
 * Create V2 Branch
 * Create Delta Mini repo
 * Change multiplier
-* Rename cache.gc file with M566 after upload (Pending more SD functions)
-* Query SD card for list of files M20
-*   Delete file from SD card M30
-*   Print file from SD card M24
-*   Pause print M25
-* Start printer state. If inquiry not able to load, reset page bool values. (Same as page refresh)
+* Reset device state. If inquiry not able to load, reset page bool values. (Same as page refresh)
