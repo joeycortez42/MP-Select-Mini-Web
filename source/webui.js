@@ -262,12 +262,20 @@ Dropzone.options.mydz = {
 			$("#gCodeSend").removeClass('btn-disable');
 			$(".temperature button").removeClass('btn-disable');
 
+			//New filename of 21 characters + .gc
+			fileParts = file.name.split('.');
+			name = fileParts[0].substring(0, 21);
+
+			if (window.sdFilenames == undefined) {
+				refreshSD();
+			}
+
 			if (window.sdFilenames.indexOf(file.name)) {
-				sendCmd('M30 ' + file.name, 'Delete old file');
+				sendCmd('M30 ' + name + '.gc', 'Delete old file');
 			}
 
 			setTimeout(function() {
-				sendCmd('M566 ' + file.name, '');
+				sendCmd('M566 ' + name + '.gc', '');
 				refreshSD();
 			}, 1000);
 		});
@@ -384,7 +392,7 @@ function deleteFile(filename) {
 function buildFilnames(output) {
 	filenames = output.split(/\n/g);
 
-	filenames.forEach((name) => {
+	filenames.forEach(function(name) {
 		if (name.match(/.gc/gi)) {
 			if (!(name.substring(0, 15) == 'Now fresh file:' || name.substring(0, 12) == 'File opened:')) {
 				itemHTML = '<li>';
