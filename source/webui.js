@@ -15,6 +15,19 @@ $(document).ready(function() {
 		printerStatus();
 	}, 2000);
 
+	// $(".webcam .img-rounded").click(function() {
+	// 	window.sdFilenames.sort();
+	// 	console.log(window.sdFilenames);
+	// });
+
+	$(".sd-files .refresh").click(function() {
+		if ($("#start_print").hasClass('btn-disable')) {
+			return;
+		} else {
+			refreshSD();
+		}
+	});
+
 	$(".movement .home").click(function() {
 		axis = $(this).attr("data-axis");
 
@@ -119,6 +132,8 @@ $(document).ready(function() {
 
 var timers = {};
 var setPositioning = false;
+var initSDCard = false;
+var sdListing = false;
 
 function pad(num, size) {
 	s = '000' + num;
@@ -131,6 +146,19 @@ function scrollConsole() {
 }
 
 function feedback(output) {
+	if (output.substring(0, 5) == 'Begin' || sdListing == true) {
+		sdListing = true;
+		
+		if (output.match(/End file list/g)) {
+			sdListing = false;
+		}
+
+		buildFilnames(output);
+		return;
+	}
+
+	output = output.replace(/\n/g, '<br />');
+
 	if (output.substring(0, 2) == 'T:') {
 		//Hide temperature reporting
 		return;
@@ -140,11 +168,13 @@ function feedback(output) {
 		output = 'ok';
 	}
 
+	output = output.replace(/N0 P15 B13/g, '');
+	output = output.replace(/N0 P15 B15/g, '');
+
+	output = output.replace(/echo:/g, '');
+
 	$("#gCodeLog").append('<p class="text-warning">' + output + '</p>');
 
-	//if (output.substring(0, 5) == 'Begin') {
-		//$(".sd-files").html('<p>' + output + '</p>');
-	//}
 	scrollConsole();
 }
 
@@ -168,6 +198,7 @@ function initWebSocket() {
 			feedback('Connection Established');
 		};
 		ws.onmessage = function(a) {
+			//console.log(a);
 			feedback(a.data);
 		};
 		ws.onclose = function() {
@@ -231,9 +262,22 @@ Dropzone.options.mydz = {
 			$("#gCodeSend").removeClass('btn-disable');
 			$(".temperature button").removeClass('btn-disable');
 
-			//setTimeout(function() {
-				//sendCmd('M566 ' + file.name, '');
-			//}, 1000);
+			//New filename of 21 characters + .gc
+			fileParts = file.name.split('.');
+			name = fileParts[0].substring(0, 21);
+
+			if (window.sdFilenames == undefined) {
+				refreshSD();
+			}
+
+			if (window.sdFilenames.indexOf(file.name)) {
+				sendCmd('M30 ' + name + '.gc', 'Delete old file');
+			}
+
+			setTimeout(function() {
+				sendCmd('M566 ' + name + '.gc', '');
+				refreshSD();
+			}, 1000);
 		});
 	}
 };
@@ -318,6 +362,47 @@ function delaySyncTemperatures(extruder, platform) {
 }
 
 function refreshSD() {
-	sendCmd('M21', 'Initialize SD card');
+	if (initSDCard == false) {
+		sendCmd('M21', 'Initialize SD card');
+		initSDCard = true;
+	}
 	sendCmd('M20', 'List SD card files');
+	window.sdFilenames = [];
+	$(".sd-files ul").html('');
+}
+
+function printFile(filename) {
+	sendCmd('M23 ' + filename, 'Select file');
+	setTimeout(function() {
+		sendCmd('M24', 'Print file');
+	}, 1000);
+	$("#stat").text('Printing');
+	$("#pgs").css('width', '0%');
+	$("#pgs").html('0% Complete');
+	$("#start_print").addClass('btn-disable');
+	$(".movement button").addClass('btn-disable');
+	$("#gCodeSend").addClass('btn-disable');
+}
+
+function deleteFile(filename) {
+	sendCmd('M30 ' + filename, 'Delete file');
+	refreshSD();
+}
+
+function buildFilnames(output) {
+	filenames = output.split(/\n/g);
+
+	filenames.forEach(function(name) {
+		if (name.match(/.gc/gi)) {
+			if (!(name.substring(0, 15) == 'Now fresh file:' || name.substring(0, 12) == 'File opened:')) {
+				itemHTML = '<li>';
+				itemHTML += '<span class="glyphicon glyphicon-print" aria-hidden="true" onclick="printFile(\'' + name + '\')"></span>';
+				itemHTML += '<span class="glyphicon glyphicon-trash" aria-hidden="true" onclick="deleteFile(\'' + name + '\')"></span>' + name;
+				itemHTML += '</li>';
+
+				$('.sd-files ul').append(itemHTML);
+				window.sdFilenames.push(name);
+			}
+		}
+	});
 }

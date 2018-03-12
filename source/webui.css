@@ -15,7 +15,7 @@ body {
 
 h3,
 h4 {
-    color: #0272b6;
+    color: #00619a;
     font-weight: 300;
 }
 
@@ -27,12 +27,18 @@ h3 {
 h4 { margin-top: 0; }
 
 .btn { letter-spacing: 0.025rem; }
-.btn-default { color: #646C7F; }
+.btn-default {
+    color: #646C7F;
+    border-color: #e3e3e3;
+}
 
 .btn-disable {
     pointer-events: none;
     opacity: 0.4;
 }
+
+.form-control,
+.input-group-addon { border: 1px solid #e3e3e3; }
 
 footer {
     padding-top: 15px;
@@ -67,7 +73,7 @@ footer {
     padding: 10px;
     margin-bottom: 20px;
     background-color: #fff;
-    border: 2px dashed #0272b6;
+    border: 2px dashed #00619a;
     border-radius: 5px;
     color: #00619a;
 }
@@ -108,6 +114,32 @@ footer {
 .dropzone .dz-preview .dz-success-mark svg g path { fill: #2C9040; }
 .dropzone .dz-preview .dz-error-mark svg g { fill: #FF2F3C; }
 
+.sd-files {
+    position: relative;
+    height: 17rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.sd-files .refresh {
+    color: #bebebe;
+    text-align: center;
+    width: 100%;
+}
+
+.sd-files li {
+    list-style: none;
+    font-weight: 300;
+    color: #00619a;
+}
+
+.sd-files li .glyphicon {
+    display: inline-block;
+    top: 2px;
+    padding-right: 15px;
+    color: #bebebe;
+}
+
 .movement .row { margin-bottom: 14px; }
 .movement .row.rate { margin-bottom: 20px; }
 .movement .direction .text-center { line-height: 2rem; }
@@ -117,8 +149,9 @@ footer {
 #console {
     min-height: 201px;
     max-height: 201px;
-    overflow: scroll;
     padding: 0 8px;
+    overflow-y: auto;
+    overflow-x: hidden;
     font-family: monospace, monospace;
     font-size: 0.875rem;
 }
@@ -150,7 +183,7 @@ footer {
 
 .slider.slider-vertical { height: 141px; }
 
-#fanspeed .slider-selection { background: #0272b6; }
+#fanspeed .slider-selection { background: #00619a; }
 
 #sete,
 #setp { cursor: pointer; }
