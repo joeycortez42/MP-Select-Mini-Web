@@ -15,10 +15,10 @@ $(document).ready(function() {
 		printerStatus();
 	}, 2000);
 
-	$(".webcam .img-rounded").click(function() {
-		window.sdFilenames.sort();
-		console.log(window.sdFilenames);
-	});
+	// $(".webcam .img-rounded").click(function() {
+	// 	window.sdFilenames.sort();
+	// 	console.log(window.sdFilenames);
+	// });
 
 	$(".sd-files .refresh").click(function() {
 		if ($("#start_print").hasClass('btn-disable')) {
@@ -198,7 +198,7 @@ function initWebSocket() {
 			feedback('Connection Established');
 		};
 		ws.onmessage = function(a) {
-			console.log(a);
+			//console.log(a);
 			feedback(a.data);
 		};
 		ws.onclose = function() {

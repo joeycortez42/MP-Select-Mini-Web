@@ -4,11 +4,13 @@
 
 Upgrade the Malyan M200 or the Monoprice Select Mini's V1 Web UI and enable faster Wi-Fi file uploads automatically.
 
-Note: Requires UI Controller firmware version 42 or greater to enable a custom Web UI.
-
 This Web UI is built using Bootstrap so it's mobile-friendly and tablet-friendly. Multiple browser connections are supported. GCode responses are sent via Web Sockets so all browser windows will display the printer responses. GCode commands are sent via the REST API, since sending via Web Sockets proved to be unreliable.
 
-![Image of the WebUI](https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/SDCard/images/screenshot.png)
+![Image of the WebUI](https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/master/images/screenshot.png)
+
+Note: Requires UI Controller firmware version 42 or greater to enable a custom Web UI.
+
+![Image of the Firmware](https://raw.githubusercontent.com/nokemono42/MP-Select-Mini-Web/master/images/firmware_version.jpg)
 
 ## Getting Started
 
@@ -113,7 +115,6 @@ Mario Anthony Galliano (Facebook Group posting with upgrade/downgrade instructio
 
 ## Upcoming Improvements
 
-* If file listing doesn't exist when file uploaded is finished, run refreshSD before file rename.
 * Test on MP Select Mini V2
 * Create V2 Branch
 * Create Delta Mini repo
