@@ -46,7 +46,9 @@ Wi-Fi and USB cannot access the printer simultaneously. Disconnect USB cable fro
 
 microSD cards need to be formated in FAT16 or FAT32. Make sure that they are not labeled HC (High Capacity) as they may not be compatible with the printer.
 
-## Updating the factor web UI
+`M503` does not work via WiFi or Web sockets with the V2 firmware.
+
+## Updating the factory web UI
 
 1. Download and unzip `MP-Select-Mini-Web` from GitHub.
 2. Point a web browser window to your printer's IP address. `http://IPAddressHere` This is the default Web UI.
@@ -75,7 +77,7 @@ Note: Since `S6` is currently broken due to V2 firmware bug, use `M563 S5`.
 
 ## SD Card Functions
 
-The file listing loads when the :rewind: icon is clicked. File names in the Web UI will be limited to 21 characters. The printer can support longer names, but it cuts off the extension and name after 24 characters.
+The file listing loads when the refresh icon is clicked. File names in the Web UI will be limited to 21 characters. The printer can support longer names, but it cuts off the extension and name after 24 characters.
 
 Files that are uploaded will be renamed from "cache.gc" to the original file name. If you are re-uploading a previous file, the old file is deleted first, then the file is renamed. The .gc extension will be used to maximize file name length.
 
