@@ -163,8 +163,8 @@
             </div>
             <div class="row rate">
                 <div class="btn-group center-block" title="Movement Interval" role="group">
-                  <button type="button" class="btn btn-default" data-rate="0.1">0.1</button>
                   <button type="button" class="btn btn-default" data-rate="1">1</button>
+                  <button type="button" class="btn btn-default" data-rate="5">5</button>
                   <button type="button" class="btn btn-default active" data-rate="10">10</button>
                   <button type="button" class="btn btn-default" data-rate="25">25</button>
                   <button type="button" class="btn btn-default" data-rate="50">50</button>
@@ -213,7 +213,7 @@
     </div>
 </div>
     <footer class="container">
-        <span class="version">Alpha v0.9.4</span>
+        <span class="version">Alpha v0.9.5</span>
     </footer>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -222,6 +222,13 @@
         <!-- -->
         <script type="text/javascript" src="https://rawgit.com/nokemono42/MP-Select-Mini-Web/master/source/swfobject.js"></script>
         <script type="text/javascript" src="https://rawgit.com/nokemono42/MP-Select-Mini-Web/master/source/web_socket.min.js"></script>
+        <script type="text/javascript">
+            function startup() {
+                if ($("#stat").text() != 'Printing') {
+                    sendCmd('M563 S6', 'Enable faster Wi-Fi file uploads');
+                }
+            }
+        </script>
         <!-- -->
         <script type="text/javascript" src="https://rawgit.com/nokemono42/MP-Select-Mini-Web/master/source/webui.min.js"></script>
         <!-- --

@@ -194,8 +194,10 @@ function initWebSocket() {
 
 	try {
 		ws = new WebSocket('ws://' + url + ':81');
-		ws.onopen = function() {
-			feedback('Connection Established');
+		feedback('Connecting...');
+		ws.onopen = function(a) {
+			//console.log(a);
+			feedback('Connection established.');
 		};
 		ws.onmessage = function(a) {
 			//console.log(a);
@@ -205,6 +207,7 @@ function initWebSocket() {
 			feedback('Disconnected');
 		}
 	} catch (a) {
+		//console.log(a);
 		feedback('Web Socket Error');
 	}
 }
@@ -318,16 +321,11 @@ function printerStatus() {
 			$("#start_print").addClass('btn-disable');
 			$(".movement button").addClass('btn-disable');
 			$("#gCodeSend").addClass('btn-disable');
+			setPositioning = false;
 		} else {
 			$("#stat").text('N/A');
 		}
 	});
-}
-
-function startup() {
-	if ($("#stat").text() != 'Printing') {
-		sendCmd('M563 S6', 'Enable faster Wi-Fi file uploads');
-	}
 }
 
 function delaySendTemp(value, device) {

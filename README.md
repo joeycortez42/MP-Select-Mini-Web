@@ -119,6 +119,5 @@ Mario Anthony Galliano (Facebook Group posting with upgrade/downgrade instructio
 
 * Test on MP Select Mini V2
 * Create V2 Branch
-* Create Delta Mini repo
 * Change multiplier
 * Reset device state. If /inquiry not able to load, reset page bool values. (Same as page refresh)
