@@ -146,7 +146,9 @@ function scrollConsole() {
 }
 
 function feedback(output) {
-	if (output.substring(0, 5) == 'Begin' || sdListing == true) {
+	output = output.replace(/echo:/g, '');
+
+	if (output.substring(0, 5) == 'Begin' || output.slice(-13) == 'End file list' || sdListing == true) {
 		sdListing = true;
 		
 		if (output.match(/End file list/g)) {
@@ -170,8 +172,6 @@ function feedback(output) {
 
 	output = output.replace(/N0 P15 B13/g, '');
 	output = output.replace(/N0 P15 B15/g, '');
-
-	output = output.replace(/echo:/g, '');
 
 	$("#gCodeLog").append('<p class="text-warning">' + output + '</p>');
 
