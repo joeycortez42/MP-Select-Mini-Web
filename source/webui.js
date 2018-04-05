@@ -66,7 +66,7 @@ $(document).ready(function() {
 		}
 		if (axis == 'E' && movement == 'plus') {
 			comment = 'Extrude ' + distance + 'mm';
-			distance = distance + ' F250';
+			distance = distance + ' F180';
 		}
 		if (axis == 'E' && movement == 'minus') {
 			sendCmd(command + axis + '-' + distance, 'Retract ' + distance + 'mm');
