@@ -46,21 +46,30 @@ $(document).ready(function() {
 	$(".movement .direction button").click(function() {
 		command = 'G1 ';
 		movement = $(this).attr("data-movement");
-		rate = $(".movement .rate button.active").attr("data-rate");
+		distance = $(".movement .rate button.active").attr("data-rate");
 		axis = $(this).attr("data-axis");
-		comment = 'Move ' + axis;
+		comment = 'Move ' + axis + ' ' + distance + 'mm';
 
 		if (setPositioning == false) {
 			sendCmd('G91', 'Set to Relative Positioning');
 			setPositioning = true;
 		}
 
-		if (movement == 'up' || movement == 'left') { rate = rate * -1; }
-		if (axis == 'Z' && movement == 'down') { comment = 'Raise Z '; }
-		if (axis == 'Z' && movement == 'up') { comment = 'Lower Z '; }
-		if (axis == 'E' && movement == 'plus') { comment = 'Extrude '; }
+		if (movement == 'up' || movement == 'left') {
+			distance = distance * -1;
+		}
+		if (axis == 'Z' && movement == 'down') {
+			comment = 'Raise Z ' + distance + 'mm';
+		}
+		if (axis == 'Z' && movement == 'up') {
+			comment = 'Lower Z ' + distance + 'mm';
+		}
+		if (axis == 'E' && movement == 'plus') {
+			comment = 'Extrude ' + distance + 'mm';
+			distance = distance + ' F250';
+		}
 		if (axis == 'E' && movement == 'minus') {
-			sendCmd(command + axis + '-' + rate, 'Retract ' + rate + 'mm');
+			sendCmd(command + axis + '-' + distance, 'Retract ' + distance + 'mm');
 			return;
 		}
 		if (movement == 'disable') {
@@ -68,11 +77,10 @@ $(document).ready(function() {
 			return;
 		}
 
-		sendCmd(command + axis + rate, comment + ' ' + rate + 'mm');
+		sendCmd(command + axis + distance, comment);
 	});
 
 	$(".movement .rate button").click(function() {
-		rate = $(this).attr("data-rate");
 		$(".movement .rate button").removeClass('active');
 		$(this).addClass('active');
 	});
