@@ -70,9 +70,9 @@ Note: Since `S6` is currently broken due to V2 firmware bug, use `M563 S5`.
 | M563 S# | Avg Transfer Speed | Supported On             |
 | ------- | -----------------: | ------------------------ |
 | S2      |            39 Kbps | Same as Firmware Default |
-| S3      |            63 Kbps | V1 / V2? / Delta         |
-| S4      |            91 Kbps | V1 / V2? / Delta         |
-| S5      |           103 Kbps | V2?                      |
+| S3      |            63 Kbps | V1 / V2 / Delta          |
+| S4      |            91 Kbps | V1 / V2 / Delta          |
+| S5      |           103 Kbps | V1                       |
 | S6      |           112 Kbps | V1                       |
 
 ## SD Card Functions
@@ -114,10 +114,3 @@ Jason Jones (Original Code)
 Matthew Upp (Middle Man)
 
 Mario Anthony Galliano (Facebook Group posting with upgrade/downgrade instructions.)
-
-## Upcoming Improvements
-
-* Test on MP Select Mini V2
-* Create V2 Branch
-* Change multiplier
-* Reset device state. If /inquiry not able to load, reset page bool values. (Same as page refresh)

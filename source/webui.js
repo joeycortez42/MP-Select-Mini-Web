@@ -5,14 +5,15 @@ URL: https://github.com/nokemono42/MP-Select-Mini-Web
 
 $(document).ready(function() {
 	printerStatus();
-	initWebSocket();
 
 	setTimeout(function() {
 		startup();
 	}, 2000);
 
 	setInterval(function() {
-		printerStatus();
+		if (uploading == false) {
+			printerStatus();
+		}
 	}, 2000);
 
 	// $(".webcam .img-rounded").click(function() {
@@ -142,6 +143,8 @@ var timers = {};
 var setPositioning = false;
 var initSDCard = false;
 var sdListing = false;
+var connected = false;
+var uploading = false;
 
 function pad(num, size) {
 	s = '000' + num;
@@ -154,9 +157,22 @@ function scrollConsole() {
 }
 
 function feedback(output) {
+	output = output.replace(/N0 P13 B15/g, '');
+	output = output.replace(/N0 P14 B15/g, '');
+	output = output.replace(/N0 P15 B13/g, '');
+	output = output.replace(/N0 P15 B15/g, '');
+	output = output.replace(/N0 P15 B1 /g, '');
 	output = output.replace(/echo:/g, '');
+	output = output.replace(/ Size: /g, '<br />Size: ');
 
-	if (output.substring(0, 5) == 'Begin' || output.slice(-13) == 'End file list' || sdListing == true) {
+	if (output.substring(0, 2) == 'T:' || output.substring(0, 5) == 'ok T:') {
+		//Hide temperature reporting
+		return;
+	}
+
+	console.log(output);
+
+	if (output.match(/Begin file list/g) || output.match(/End file list/g) || sdListing == true) {
 		sdListing = true;
 		
 		if (output.match(/End file list/g)) {
@@ -167,21 +183,26 @@ function feedback(output) {
 		return;
 	}
 
+	output.trim();
+
 	output = output.replace(/\n/g, '<br />');
 
-	if (output.substring(0, 2) == 'T:') {
-		//Hide temperature reporting
-		return;
+	// if (output.substring(0, 5) == 'ok N0') {
+	// 	output = 'ok';
+	// }
+
+	if (output.substring(output.length -6, output.length) == '<br />') {
+		output = output.slice(0, -6);
 	}
 
-	if (output.substring(0, 5) == 'ok N0') {
-		output = 'ok';
+	if (output.substring(0, 10) == 'enqueueing') {
+		output = output.substring(11);
+		output = output.replace(/"/g, '');
+
+		$("#gCodeLog").append('<p class="text-primary">' + output + ' <span class="text-muted">;</span></p>');
+	} else {
+		$("#gCodeLog").append('<p class="text-warning">' + output + '</p>');
 	}
-
-	output = output.replace(/N0 P15 B13/g, '');
-	output = output.replace(/N0 P15 B15/g, '');
-
-	$("#gCodeLog").append('<p class="text-warning">' + output + '</p>');
 
 	scrollConsole();
 }
@@ -206,6 +227,7 @@ function initWebSocket() {
 		ws.onopen = function(a) {
 			//console.log(a);
 			feedback('Connection established.');
+			connected = true;
 		};
 		ws.onmessage = function(a) {
 			//console.log(a);
@@ -213,6 +235,7 @@ function initWebSocket() {
 		};
 		ws.onclose = function() {
 			feedback('Disconnected');
+			connected = false;
 		}
 	} catch (a) {
 		//console.log(a);
@@ -239,7 +262,7 @@ String.prototype.contains = function(it) {
 
 Dropzone.options.mydz = {
 	accept: function(file, done) {
-		if (file.name.contains('.g')) {
+		if (file.name.contains('.gc')) {
 			//window.startTimer = new Date();
 
 			done();
@@ -247,6 +270,7 @@ Dropzone.options.mydz = {
 			$(".movement button").addClass('btn-disable');
 			$("#gCodeSend").addClass('btn-disable');
 			$(".temperature button").addClass('btn-disable');
+			uploading = true;
 		} else {
 			done('Not a valid G-code file.');
 		}
@@ -287,8 +311,11 @@ Dropzone.options.mydz = {
 
 			setTimeout(function() {
 				sendCmd('M566 ' + name + '.gc', '');
-				refreshSD();
 			}, 1000);
+
+			setTimeout(function() {
+				refreshSD();
+			}, 1500);
 		});
 	}
 };
@@ -322,6 +349,10 @@ function printerStatus() {
 			$("#start_print").removeClass('btn-disable');
 			$(".movement button").removeClass('btn-disable');
 			$("#gCodeSend").removeClass('btn-disable');
+
+			if (connected == false) {
+				initWebSocket();
+			}
 		} else if (c == 'P') {
 			$("#stat").text('Printing');
 			$("#pgs").css('width', data.match(/\d+/g )[4] + '%');
@@ -390,9 +421,12 @@ function printFile(filename) {
 	$("#gCodeSend").addClass('btn-disable');
 }
 
-function deleteFile(filename) {
-	sendCmd('M30 ' + filename, 'Delete file');
-	refreshSD();
+function deleteFile(item) {
+	sendCmd('M30 ' + $(item).parent().text(), 'Delete file');
+	
+	$(item).parent().fadeOut( "slow", function() {
+		$(this).remove();
+	});
 }
 
 function buildFilnames(output) {
@@ -401,14 +435,21 @@ function buildFilnames(output) {
 	filenames.forEach(function(name) {
 		if (name.match(/.gc/gi)) {
 			if (!(name.substring(0, 15) == 'Now fresh file:' || name.substring(0, 12) == 'File opened:')) {
-				itemHTML = '<li>';
-				itemHTML += '<span class="glyphicon glyphicon-print" aria-hidden="true" onclick="printFile(\'' + name + '\')"></span>';
-				itemHTML += '<span class="glyphicon glyphicon-trash" aria-hidden="true" onclick="deleteFile(\'' + name + '\')"></span>' + name;
-				itemHTML += '</li>';
-
-				$('.sd-files ul').append(itemHTML);
 				window.sdFilenames.push(name);
 			}
 		}
 	});
+
+	window.sdFilenames.sort();
+
+	if (output.match(/End file list/g)) {
+		sdFilenames.forEach(function(name) {
+			itemHTML = '<li>';
+			itemHTML += '<span class="glyphicon glyphicon-print" aria-hidden="true" onclick="printFile(\'' + name + '\')"></span>';
+			itemHTML += '<span class="glyphicon glyphicon-trash" aria-hidden="true" onclick="deleteFile(this)"></span>' + name;
+			itemHTML += '</li>';
+
+			$('.sd-files ul').append(itemHTML);
+		});
+	}
 }
