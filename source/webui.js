@@ -287,6 +287,7 @@ Dropzone.options.mydz = {
 		});
 
 		this.on('complete', function(file) {
+			uploading = false;
 			//File upload duration
 			//endTimer = new Date();
 			//duration = endTimer - window.startTimer;
