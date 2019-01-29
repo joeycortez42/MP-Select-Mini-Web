@@ -40,11 +40,11 @@ G1 X60 Y60 F1000 ; Center bed to signify completion
 
 ### Setup Limitations
 
-*This method will not work if Wi-Fi password contains a semicolon “;” or for open Wi-Fi networks with no password.
+⋅⋅*This method will not work if Wi-Fi password contains a semicolon “;” or for open Wi-Fi networks with no password.
 
-*Wi-Fi and USB cannot access the printer simultaneously. Disconnect USB cable from the printer if you want to use the Wi-Fi function. Wi-Fi only works with 2.4 GHz b/g/n networks.
+⋅⋅*Wi-Fi and USB cannot access the printer simultaneously. Disconnect USB cable from the printer if you want to use the Wi-Fi function. Wi-Fi only works with 2.4 GHz b/g/n networks.
 
-*microSD cards need to be formated in FAT16 or FAT32. Make sure that they are not labeled HC (High Capacity) as they may not be compatible with the printer.
+⋅⋅*microSD cards need to be formated in FAT16 or FAT32. Make sure that they are not labeled HC (High Capacity) as they may not be compatible with the printer.
 
 ## Updating the factory web UI
 
@@ -88,15 +88,15 @@ While you may want to update the UI of the printer, you don't want the web serve
 But if you want to use the Web UI without an active internet connection, delete the `webui.html` file and rename `webui-offline.html` to `webui.html`.
 
 ## Behavioral Notes
-*GCode commands are sent via the REST API, since sending via Web Sockets is unreliable. The corresponding GCode responses are sent via Web Sockets so all browser windows will display the printer responses. 
+⋅⋅*GCode commands are sent via the REST API, since sending via Web Sockets is unreliable. The corresponding GCode responses are sent via Web Sockets so all browser windows will display the printer responses. 
 
-*`M503`, print current settings, does not work via Wi-Fi or Web sockets with the V2 firmware.
+⋅⋅*`M503`, print current settings, does not work via Wi-Fi or Web sockets with the V2 firmware.
 
-*Like the progress bar on the printer, the progress bar on the UI is not an indicator of time remaining. It's showing the percentage of layers printed.
+..*Like the progress bar on the printer, the progress bar on the UI is not an indicator of time remaining. It's showing the percentage of layers printed.
 
-*The websocket connection may be closed during long prints, but should attempt a reconnection once the print is complete.
+..*The websocket connection may be closed during long prints, but should attempt a reconnection once the print is complete.
 
-*There is definitely an output buffer bug in the stock firmware that causes the file listing output to be erradic. Sometimes, a truncated list is sent. Other times, only half of the output is sent.
+..*There is definitely an output buffer bug in the stock firmware that causes the file listing output to be erradic. Sometimes, a truncated list is sent. Other times, only half of the output is sent.
 
 ## Troubleshooting
 
