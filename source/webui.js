@@ -131,7 +131,7 @@ $(document).ready(function() {
 	});
 
 	$("#clrfan").click(function() {
-		sendCmd('M106 S0', 'Turn off fan');
+		sendCmd('M107', 'Turn off fan');
 	});
 
 	$("form").submit(function() {
